@@ -1,5 +1,5 @@
 xlsm: build
-	cd src && zip ../build/webxcel.xlsm * -r
+	cd src/xlsm && zip ../../build/webxcel.xlsm * -r
 
 build:
 	@mkdir build

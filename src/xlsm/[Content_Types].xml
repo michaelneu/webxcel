@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+	<Default ContentType="application/vnd.ms-office.vbaProject" Extension="bin"/>
 	<Default ContentType="application/vnd.openxmlformats-package.relationships+xml" Extension="rels"/>
 	<Default ContentType="application/xml" Extension="xml"/>
 	<Override ContentType="application/vnd.ms-excel.sheet.macroEnabled.main+xml" PartName="/xl/workbook.xml"/>
