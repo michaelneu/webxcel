@@ -11,36 +11,36 @@ $book = $excel.Workbooks.Add($missing)
 
 Function AddScriptToBook($book, $file)
 {
-	$extension = $file.Extension.ToLower()
+    $extension = $file.Extension.ToLower()
 
-	$lines = [IO.File]::ReadAllLines($file.FullName)
-	$lines = [Linq.Enumerable]::SkipWhile($lines, [Func[string, bool]]{ param($x)		$x.StartsWith("VERSION") `
-																					-or $x.StartsWith("BEGIN") `
-																					-or $x.StartsWith("  ") `
-																					-or $x.StartsWith("END") `
-																					-or $x.StartsWith("Attribute") `
-								})
+    $lines = [IO.File]::ReadAllLines($file.FullName)
+    $lines = [Linq.Enumerable]::SkipWhile($lines, [Func[string, bool]]{ param($x)       $x.StartsWith("VERSION") `
+                                                                                    -or $x.StartsWith("BEGIN") `
+                                                                                    -or $x.StartsWith("  ") `
+                                                                                    -or $x.StartsWith("END") `
+                                                                                    -or $x.StartsWith("Attribute") `
+                                })
 
-	$code = [String]::Join("`r`n", $lines)
+    $code = [String]::Join("`r`n", $lines)
 
-	$moduleType = $COMPONENT_TYPE_MODULE
+    $moduleType = $COMPONENT_TYPE_MODULE
 
-	If ($extension -eq ".cls")
-	{
-		$moduleType = $COMPONENT_TYPE_CLASS
-	}
+    If ($extension -eq ".cls")
+    {
+        $moduleType = $COMPONENT_TYPE_CLASS
+    }
 
-	$module = $book.VBProject.VBComponents.Add($moduleType)
+    $module = $book.VBProject.VBComponents.Add($moduleType)
 
-	$module.CodeModule.AddFromString($code)
-	$module.Name = [IO.Path]::GetFileNameWithoutExtension($file.FullName)
+    $module.CodeModule.AddFromString($code)
+    $module.Name = [IO.Path]::GetFileNameWithoutExtension($file.FullName)
 }
 
 $files = Get-ChildItem -Recurse src/*.*
 
 ForEach ($file in $files)
 {
-	AddScriptToBook $book $file
+    AddScriptToBook $book $file
 }
 
 $build = Resolve-Path "build"
