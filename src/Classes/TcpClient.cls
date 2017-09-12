@@ -25,10 +25,24 @@ End Sub
 
 
 Public Function ReceiveString() As String
+    Dim message As String
     Dim buffer As String * 1024
-    Dim recvResult As Long
+    Dim readBytes As Long
     
-    recvResult = recv(m_clientSocket, buffer, Len(buffer), 0)
+    message = ""
     
-    ReceiveString = buffer
+    Do
+        readBytes = recv(m_clientSocket, buffer, Len(buffer), 0)
+        
+        If readBytes > 0 Then
+            message = message & buffer
+        End If
+    Loop While readBytes = Len(buffer)
+    
+    ReceiveString = message
 End Function
+
+
+Public Sub Dispose()
+    closesocket (m_clientSocket)
+End Sub
