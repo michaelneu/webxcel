@@ -7,26 +7,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Private Enum HttpRequestMethod
-    MethodGet
-    MethodPost
-    MethodPut
-    MethodDelete
-End Enum
-
-
-Private Type HttpRequest
-    Method As HttpRequestMethod
-    Url As String
-End Type
-
-
-Private Type HttpResponse
-    StatusCode As Integer
-    Body As String
-End Type
-
-
 Private m_tcpServer As TcpServer
 
 
@@ -46,10 +26,11 @@ Public Sub Serve(ByVal port As Long, Optional ByVal rootDirectory As String = ".
         requestText = client.ReceiveString()
         
         Dim request As HttpRequest
-        request = ParseRequest(requestText)
+        Set request = New HttpRequest
+        request.Parse requestText
         
         Dim response As HttpResponse
-        response = ProcessRequest(request)
+        Set response = ProcessRequest(request)
         
         Dim responseText As String
         responseText = ""
@@ -70,28 +51,12 @@ Public Sub Serve(ByVal port As Long, Optional ByVal rootDirectory As String = ".
 End Sub
 
 
-Private Function ParseRequest(ByVal request As String) As HttpRequest
-    Dim requestAsLower As String
-    requestAsLower = LCase(request)
-    
-    ParseRequest.Method = ParseMethod(requestAsLower)
-End Function
-
-
-Private Function ParseMethod(ByVal requestAsLower As String) As HttpRequestMethod
-    If requestAsLower Like "get *" Then
-        ParseMethod = MethodGet
-    ElseIf requestAsLower Like "post *" Then
-        ParseMethod = MethodPost
-    ElseIf requestAsLower Like "put *" Then
-        ParseMethod = MethodPut
-    ElseIf requestAsLower Like "delete *" Then
-        ParseMethod = MethodDelete
-    End If
-End Function
-
-
 Private Function ProcessRequest(request As HttpRequest) As HttpResponse
-    ProcessRequest.Body = "It works!"
-    ProcessRequest.StatusCode = 200
+    Dim response As HttpResponse
+    Set response = New HttpResponse
+    
+    response.Body = "It works!"
+    response.StatusCode = 200
+    
+    Set ProcessRequest = response
 End Function

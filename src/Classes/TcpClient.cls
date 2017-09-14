@@ -17,29 +17,43 @@ Public Sub Initialize(ByVal socket As Long)
 End Sub
 
 
-Public Sub SendString(ByVal Message As String)
+Public Sub SendString(ByVal message As String)
     Dim result As Long
     
-    result = wsock32.send(m_clientSocket, ByVal Message, Len(Message), 0)
+    result = wsock32.send(m_clientSocket, ByVal message, Len(message), 0)
 End Sub
 
 
 Public Function ReceiveString() As String
-    Dim Message As String
+    Dim message As String
     Dim buffer As String * 1024
     Dim readBytes As Long
     
-    Message = ""
+    message = ""
     
     Do
         readBytes = wsock32.recv(m_clientSocket, buffer, Len(buffer), 0)
         
         If readBytes > 0 Then
-            Message = Message & buffer
+            message = message & buffer
         End If
     Loop While readBytes = Len(buffer)
     
-    ReceiveString = Message
+    ReceiveString = TrimNullCharacters(message)
+End Function
+
+
+Private Function TrimNullCharacters(ByVal text As String) As String
+    Dim nullCharacterPosition As Long
+    nullCharacterPosition = InStr(text, Chr(0))
+
+    If nullCharacterPosition = 0 Then
+        text = ""
+    ElseIf nullCharacterPosition > 0 Then
+        text = Left(text, nullCharacterPosition - 1)
+    End If
+
+    TrimNullCharacters = text
 End Function
 
 
