@@ -15,12 +15,12 @@ Private Sub Class_Initialize()
 End Sub
 
 
-Public Sub AddController(controller As WebController)
+Public Sub AddController(controller As IWebController)
     m_controllers.Add controller
 End Sub
 
 
-Public Function GetMatchingController(requestUrl As String) As WebController
+Public Function GetMatchingController(requestUrl As String) As IWebController
     For Each controller In m_controllers
         If requestUrl Like controller.UrlPattern Then
             Set GetMatchingController = controller

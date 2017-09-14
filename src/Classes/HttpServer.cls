@@ -66,7 +66,7 @@ End Sub
 
 
 Private Function ProcessRequest(request As HttpRequest) As HttpResponse
-    Dim controller As WebController
+    Dim controller As IWebController
     Set controller = Controllers.GetMatchingController(request.Url)
     
     If Not controller Is Nothing Then

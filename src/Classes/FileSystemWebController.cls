@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Implements WebController
+Implements IWebController
 
 Private m_directory As String
 
@@ -30,17 +30,17 @@ Public Property Let Directory(val As String)
 End Property
 
 
-Private Property Get WebController_UrlPattern() As String
-    WebController_UrlPattern = "*"
+Private Property Get IWebController_UrlPattern() As String
+    IWebController_UrlPattern = "*"
 End Property
 
 
-Private Function WebController_ProcessRequest(request As HttpRequest) As HttpResponse
+Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpResponse
     Dim response As HttpResponse
     Set response = New HttpResponse
     
     Dim filename As String
-    filename = ResolveFile(request.url)
+    filename = ResolveFile(request.Url)
     
     Dim file As FileInfo
     Set file = New FileInfo
@@ -55,7 +55,7 @@ Private Function WebController_ProcessRequest(request As HttpRequest) As HttpRes
         response.StatusCode = 404
     End If
     
-    Set WebController_ProcessRequest = response
+    Set IWebController_ProcessRequest = response
 End Function
 
 
