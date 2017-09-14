@@ -9,19 +9,16 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Private m_wsa As WSADATA
+Private m_wsa As wsock32.WSADATA
 Private m_serverSocket As Long
-Private m_errors As TcpError
 
 
 Private Sub Class_Initialize()
-    Set m_errors = New TcpError
-
     Dim result As Long
-    result = WSAStartup(257, m_wsa)
+    result = wsock32.WSAStartup(257, m_wsa)
     
     If result <> 0 Then
-        m_errors.RaiseErrorSetup
+        Err.Raise StatusCode.ErrorSocketSetup
         Exit Sub
     End If
 End Sub
@@ -29,33 +26,33 @@ End Sub
 
 
 Public Sub BindTo(ByVal port As Long, Optional ByVal backlog As Integer = 10)
-    m_serverSocket = socket(AF_INET, SOCK_STREAM, 0)
+    m_serverSocket = wsock32.socket(AF_INET, SOCK_STREAM, 0)
     
-    If m_serverSocket = INVALID_SOCKET Then
-        m_errors.RaiseErrorCreateSocket
+    If m_serverSocket = wsock32.INVALID_SOCKET Then
+        Err.Raise StatusCode.ErrorSocketCreation
         Exit Sub
     End If
     
-    Dim endpoint As sockaddr_in
-    endpoint.sin_family = AF_INET
-    endpoint.sin_addr.s_addr = INADDR_ANY
-    endpoint.sin_port = htons(port)
+    Dim endpoint As wsock32.sockaddr_in
+    endpoint.sin_family = wsock32.AF_INET
+    endpoint.sin_addr.s_addr = wsock32.INADDR_ANY
+    endpoint.sin_port = wsock32.htons(port)
     
     Dim bindResult As Long
-    bindResult = bind(m_serverSocket, endpoint, 16)
+    bindResult = wsock32.bind(m_serverSocket, endpoint, 16)
     
     If bindResult <> 0 Then
         Dispose
-        m_errors.RaiseErrorBind (port)
+        Err.Raise StatusCode.ErrorSocketBind
         Exit Sub
     End If
     
     Dim listenResult As Long
-    listenResult = listen(m_serverSocket, backlog)
+    listenResult = wsock32.listen(m_serverSocket, backlog)
     
     If listenResult <> 0 Then
         Dispose
-        m_errors.RaiseErrorListen
+        Err.Raise StatusCode.ErrorSocketStartListening
         Exit Sub
     End If
 End Sub
@@ -64,13 +61,13 @@ End Sub
 Public Function AcceptTcpClient() As TcpClient
     Dim client As TcpClient
     Dim socket
-    Dim socketAddress As sockaddr
+    Dim socketAddress As wsock32.sockaddr
     
-    socket = accept(m_serverSocket, socketAddress, 16)
+    socket = wsock32.accept(m_serverSocket, socketAddress, 16)
     
     If socket = -1 Then
         Dispose
-        m_errors.RaiseErrorAccept
+        Err.Raise StatusCode.ErrorSocketAcceptClient
         Exit Function
     End If
     
@@ -82,6 +79,6 @@ End Function
 
 
 Public Sub Dispose()
-    closesocket (m_serverSocket)
-    WSACleanup
+    wsock32.closesocket (m_serverSocket)
+    wsock32.WSACleanup
 End Sub

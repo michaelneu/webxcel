@@ -17,32 +17,32 @@ Public Sub Initialize(ByVal socket As Long)
 End Sub
 
 
-Public Sub SendString(ByVal message As String)
+Public Sub SendString(ByVal Message As String)
     Dim result As Long
     
-    result = send(m_clientSocket, ByVal message, Len(message), 0)
+    result = wsock32.send(m_clientSocket, ByVal Message, Len(Message), 0)
 End Sub
 
 
 Public Function ReceiveString() As String
-    Dim message As String
+    Dim Message As String
     Dim buffer As String * 1024
     Dim readBytes As Long
     
-    message = ""
+    Message = ""
     
     Do
-        readBytes = recv(m_clientSocket, buffer, Len(buffer), 0)
+        readBytes = wsock32.recv(m_clientSocket, buffer, Len(buffer), 0)
         
         If readBytes > 0 Then
-            message = message & buffer
+            Message = Message & buffer
         End If
     Loop While readBytes = Len(buffer)
     
-    ReceiveString = message
+    ReceiveString = Message
 End Function
 
 
 Public Sub Dispose()
-    closesocket (m_clientSocket)
+    wsock32.closesocket (m_clientSocket)
 End Sub
