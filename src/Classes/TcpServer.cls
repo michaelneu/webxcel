@@ -11,6 +11,7 @@ Option Explicit
 
 Private m_wsa As wsock32.WSADATA
 Private m_serverSocket As Long
+Private m_fdSet As wsock32.fd_set
 
 
 Private Sub Class_Initialize()
@@ -58,8 +59,24 @@ Public Sub BindTo(ByVal port As Long, Optional ByVal backlog As Integer = 10)
 End Sub
 
 
-Public Function AcceptTcpClient() As TcpClient
-    Dim client As TcpClient
+Public Function AcceptTcpClient(Optional ByVal timeoutMs As Long = 500) As TcpClient
+    wsock32.FD_ZERO_MACRO m_fdSet
+    wsock32.FD_SET_MACRO m_serverSocket, m_fdSet
+    
+    Dim time As wsock32.timeval
+    time.tv_sec = timeoutMs / 1000
+    time.tv_usec = timeoutMs Mod 1000
+    
+    Dim emptyFdSet As fd_set
+    
+    Dim selectResult As Integer
+    selectResult = wsock32.select_(m_serverSocket, m_fdSet, emptyFdSet, emptyFdSet, time)
+    
+    If selectResult = 0 Then
+        Set AcceptTcpClient = Nothing
+        Exit Function
+    End If
+    
     Dim socket
     Dim socketAddress As wsock32.sockaddr
     
@@ -71,8 +88,10 @@ Public Function AcceptTcpClient() As TcpClient
         Exit Function
     End If
     
+    Dim client As TcpClient
     Set client = New TcpClient
-    client.Initialize (socket)
+    
+    client.Initialize socket
     
     Set AcceptTcpClient = client
 End Function

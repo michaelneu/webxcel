@@ -16,35 +16,42 @@ End Sub
 
 
 Public Sub Serve(ByVal port As Long, Optional ByVal rootDirectory As String = ".")
+    Dim lockfile As FileInfo
+    Set lockfile = New FileInfo
+    
+    lockfile.Initialize ActiveWorkbook.FullName & ".lock"
+    lockfile.Create
+    
     m_tcpServer.BindTo port, 100
     
     Do While True
         Dim client As TcpClient
-        Set client = m_tcpServer.AcceptTcpClient()
+        Set client = m_tcpServer.AcceptTcpClient(1000)
         
-        Dim requestText As String
-        requestText = client.ReceiveString()
+        If Not client Is Nothing Then
+            Dim requestText As String
+            requestText = client.ReceiveString()
+            
+            If requestText <> "" Then
+                Dim request As HttpRequest
+                Set request = New HttpRequest
+                request.Parse requestText
+                
+                Dim response As HttpResponse
+                Set response = ProcessRequest(request)
+                
+                Dim responseText As String
+                responseText = response.ToString()
+                
+                client.SendString responseText
+            End If
+            
+            client.Dispose
+        End If
         
-        Dim request As HttpRequest
-        Set request = New HttpRequest
-        request.Parse requestText
-        
-        Dim response As HttpResponse
-        Set response = ProcessRequest(request)
-        
-        Dim responseText As String
-        responseText = ""
-        
-        responseText = responseText & "HTTP/1.1 " & response.StatusCode & " Nobody Needs This Anyway" & vbCrLf
-        responseText = responseText & "Server: Microsoft Excel/" & Application.Version & vbCrLf
-        responseText = responseText & "Content-Length: " & Len(response.Body) & vbCrLf
-        responseText = responseText & "Connection: close" & vbCrLf
-        responseText = responseText & vbCrLf
-        responseText = responseText & response.Body
-        
-        client.SendString responseText
-        client.Dispose
-        Exit Do
+        If Not lockfile.Exists Then
+            Exit Do
+        End If
     Loop
     
     m_tcpServer.Dispose
