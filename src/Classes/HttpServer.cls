@@ -8,14 +8,21 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Private m_tcpServer As TcpServer
+Private m_controllers As WebControllerCollection
 
 
 Private Sub Class_Initialize()
     Set m_tcpServer = New TcpServer
+    Set m_controllers = New WebControllerCollection
 End Sub
 
 
-Public Sub Serve(ByVal port As Long, Optional ByVal rootDirectory As String = ".")
+Public Property Get Controllers() As WebControllerCollection
+    Set Controllers = m_controllers
+End Property
+
+
+Public Sub Serve(ByVal port As Long)
     Dim lockfile As FileInfo
     Set lockfile = New FileInfo
     
@@ -59,11 +66,17 @@ End Sub
 
 
 Private Function ProcessRequest(request As HttpRequest) As HttpResponse
-    Dim response As HttpResponse
-    Set response = New HttpResponse
+    Dim controller As WebController
+    Set controller = Controllers.GetMatchingController(request.Url)
     
-    response.Body = "It works!"
-    response.StatusCode = 200
-    
-    Set ProcessRequest = response
+    If Not controller Is Nothing Then
+        Set ProcessRequest = controller.ProcessRequest(request)
+    Else
+        Dim response As HttpResponse
+        Set response = New HttpResponse
+        
+        response.StatusCode = 500
+        
+        Set ProcessRequest = response
+    End If
 End Function

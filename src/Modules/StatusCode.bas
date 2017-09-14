@@ -7,3 +7,5 @@ Public Const ErrorSocketAcceptClient = -5
 
 Public Const ErrorHttpRequestInvalidFormat = -11
 Public Const ErrorHttpRequestUnknownRequestMethod = -12
+
+Public Const ErrorFileNotFound = -21

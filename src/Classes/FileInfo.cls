@@ -21,8 +21,33 @@ Public Sub Initialize(ByVal name As String)
 End Sub
 
 
-Public Property Get Exists()
+Public Property Get Exists() As Boolean
     Exists = m_fso.FileExists(m_path)
+End Property
+
+
+Public Property Get Extension() As String
+    Extension = m_fso.GetExtensionName(m_path)
+End Property
+
+
+Public Property Get MimeType() As String
+    Dim ext As String
+    ext = LCase(Extension)
+    
+    Select Case ext
+        Case "json", "xml"
+            MimeType = "application/" & ext
+            
+        Case "html", "txt"
+            MimeType = "text/html"
+            
+        Case "png", "jpg", "jpeg", "gif"
+            MimeType = "image/" & ext
+    
+        Case Else
+            MimeType = "application/octet-stream"
+    End Select
 End Property
 
 
