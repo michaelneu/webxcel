@@ -36,7 +36,7 @@ Function AddScriptToBook($book, $file)
     $module.Name = [IO.Path]::GetFileNameWithoutExtension($file.FullName)
 }
 
-$files = Get-ChildItem -Recurse src/*.*
+$files = gci src *.* -rec | where { ! $_.PSIsContainer }
 
 ForEach ($file in $files)
 {
