@@ -37,3 +37,8 @@ Public Function TrimRight(text As String, c As String) As String
     
     TrimRight = text
 End Function
+
+
+Public Function SubString(ByVal text As String, startIndex As Integer) As String
+    SubString = Right(text, Len(text) - startIndex)
+End Function

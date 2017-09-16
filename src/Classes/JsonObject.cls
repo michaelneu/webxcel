@@ -18,20 +18,28 @@ End Sub
 
 
 Public Property Get PropertyNames() As Collection
-    Set PropertyNames = m_propeties.Keys
+    Set PropertyNames = New Collection
+    
+    For Each property In m_properties
+        PropertyNames.Add property
+    Next property
 End Property
 
 
-Public Sub SetProperty(property As String, Value As IJson)
-    If m_properties.Exists(property) Then
-        m_properties.Remove property
-    End If
-    
-    m_properties.Add property, Value
+Public Sub SetProperty(ByVal property As String, value As IJson)
+    RemoveProperty property
+    m_properties.Add property, value
 End Sub
 
 
-Public Function GetProperty(property As String) As IJson
+Public Sub RemoveProperty(ByVal property As String)
+    If m_properties.Exists(property) Then
+        m_properties.Remove property
+    End If
+End Sub
+
+
+Public Function GetProperty(ByVal property As String) As IJson
     Set GetProperty = m_properties(property)
 End Function
 
@@ -46,6 +54,9 @@ Private Function IJson_ToJson() As String
     For Each property In m_properties
         Dim obj As IJson
         Set obj = m_properties(property)
+        
+        Dim t
+        t = TypeName(obj)
         
         json = json & """" & property & """: " & obj.ToJson
         

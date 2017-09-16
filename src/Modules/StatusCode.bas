@@ -9,3 +9,7 @@ Public Const ErrorHttpRequestInvalidFormat = -11
 Public Const ErrorHttpRequestUnknownRequestMethod = -12
 
 Public Const ErrorFileNotFound = -21
+
+Public Const ErrorSheetNotFound = -31
+Public Const ErrorNoPrimaryKeyDefined = -32
+Public Const ErrorInvalidForeignKeyUsed = -33

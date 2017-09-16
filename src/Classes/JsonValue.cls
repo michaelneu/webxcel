@@ -9,12 +9,18 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Implements IJson
 
-Public Value
+Public value As Variant
+
+Public Property Get ContainsNull() As Boolean
+    ContainsNull = IsNull(value)
+End Property
 
 Private Function IJson_ToJson() As String
-    If TypeName(Value) = "String" Then
-        IJson_ToJson = """" & Value & """"
+    If TypeName(value) = "String" Then
+        IJson_ToJson = """" & value & """"
+    ElseIf ContainsNull Then
+        IJson_ToJson = "null"
     Else
-        IJson_ToJson = Value
+        IJson_ToJson = value
     End If
 End Function
