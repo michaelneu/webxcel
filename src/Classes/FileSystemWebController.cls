@@ -30,9 +30,9 @@ Public Property Let Directory(val As String)
 End Property
 
 
-Private Property Get IWebController_UrlPattern() As String
-    IWebController_UrlPattern = "*"
-End Property
+Private Function IWebController_MatchesUrl(requestUrl As String) As Boolean
+    IWebController_MatchesUrl = True
+End Function
 
 
 Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpResponse

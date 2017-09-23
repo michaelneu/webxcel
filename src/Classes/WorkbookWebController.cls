@@ -19,9 +19,9 @@ Private Sub Class_Initialize()
 End Sub
 
 
-Private Property Get IWebController_UrlPattern() As String
-    IWebController_UrlPattern = UrlPrefix & "*"
-End Property
+Private Function IWebController_MatchesUrl(requestUrl As String) As Boolean
+    IWebController_MatchesUrl = requestUrl Like UrlPrefix & "*"
+End Function
 
 
 Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpResponse

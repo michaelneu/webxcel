@@ -22,7 +22,7 @@ End Sub
 
 Public Function GetMatchingController(requestUrl As String) As IWebController
     For Each controller In m_controllers
-        If requestUrl Like controller.UrlPattern Then
+        If controller.MatchesUrl(requestUrl) Then
             Set GetMatchingController = controller
             Exit Function
         End If

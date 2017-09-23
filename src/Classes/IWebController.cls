@@ -7,8 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Public Property Get UrlPattern() As String
-End Property
+Public Function MatchesUrl(requestUrl As String) As Boolean
+End Function
 
 
 Public Function ProcessRequest(request As HttpRequest) As HttpResponse
