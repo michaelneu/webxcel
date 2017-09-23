@@ -22,6 +22,7 @@ Public Property Get PrimaryKey() As String
     For Each column In m_columns
         If column.Index = m_primaryKey Then
             PrimaryKey = column.Name
+            Exit Property
         End If
     Next column
 End Property
