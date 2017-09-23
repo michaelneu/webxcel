@@ -91,7 +91,7 @@ Private Function MapEntryRelationships(entry As JsonObject) As JsonObject
 End Function
 
 
-Public Function Find(sheetName As String, key) As JsonObject
+Public Function Find(sheetName As String, key) As IJson
     Dim table As WorksheetTable
     Set table = m_tables.FindTable(sheetName)
     
@@ -99,15 +99,24 @@ Public Function Find(sheetName As String, key) As JsonObject
     Set allValues = All(sheetName)
     
     Dim i As Integer
-    For i = 0 To allValues.Count
+    For i = 0 To allValues.Count - 1
         Dim value As JsonObject
         Set value = allValues.GetItem(i)
         
-        If value.GetProperty(table.PrimaryKey) = key Then
+        Dim valueAsJsonValue As JsonValue
+        Set valueAsJsonValue = value.GetProperty(table.PrimaryKey)
+        
+        If valueAsJsonValue.value = key Then
             Set Find = value
             Exit Function
         End If
     Next i
+    
+    Dim nullValue As JsonValue
+    Set nullValue = New JsonValue
+    nullValue.value = Null
+    
+    Set Find = nullValue
 End Function
 
 

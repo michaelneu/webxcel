@@ -28,7 +28,7 @@ End Sub
 
 
 Public Function GetItem(Index As Integer) As IJson
-    Set GetItem = m_items(Index)
+    Set GetItem = m_items(Index + 1)
 End Function
 
 
