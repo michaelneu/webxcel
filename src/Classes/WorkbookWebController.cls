@@ -9,6 +9,21 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Implements IWebController
 
+
+Private Enum EntityRequestMode
+    All
+    ByKey
+    Invalid
+End Enum
+
+
+Private Type EntityRequest
+    Mode As EntityRequestMode
+    Sheet As String
+    Key As String
+End Type
+
+
 Private Const UrlPrefix = "/workbook/"
 
 Private m_wrm As WorksheetRelationshipMapper
@@ -25,25 +40,76 @@ End Function
 
 
 Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpResponse
+    Dim requestHandled As Boolean
+    requestHandled = False
+    
     Dim response As HttpResponse
     Set response = New HttpResponse
     
-    Dim sheetName As String
-    sheetName = StringExtensions.SubString(request.Url, Len(UrlPrefix))
+    response.Headers.AddHeader "Content-Type", "application/json"
     
-    Dim slashIndex As Integer
-    slashIndex = InStr(sheetName, "/")
+    Dim parsedRequest As EntityRequest
+    parsedRequest = ParseRequestUrl(request.Url)
     
-    If slashIndex > 0 Then
-        sheetName = Left(sheetName, slashIndex)
+    If parsedRequest.Mode = All And request.RequestMethod = MethodGet Then
+        Dim values As IJson
+        Set values = m_wrm.All(parsedRequest.Sheet)
+            
+        response.Body = values.ToJson()
+        response.StatusCode = 200
+        
+        requestHandled = True
+    ElseIf parsedRequest.Mode = ByKey Then
+        If request.RequestMethod = MethodGet Then
+            Dim value As IJson
+            Set value = m_wrm.Find(parsedRequest.Sheet, parsedRequest.Key)
+            
+            response.Body = value.ToJson()
+            
+            If TypeName(value) = "JsonValue" Then
+                response.StatusCode = 404
+            Else
+                response.StatusCode = 200
+            End If
+            
+            requestHandled = True
+        End If
     End If
     
-    Dim values As IJson
-    Set values = m_wrm.All(sheetName)
-    
-    response.Body = values.ToJson
-    response.Headers.AddHeader "Content-Type", "application/json"
-    response.StatusCode = 200
+    If Not requestHandled Then
+        response.StatusCode = 404
+    End If
     
     Set IWebController_ProcessRequest = response
+End Function
+
+
+Private Function ParseRequestUrl(requestUrl As String) As EntityRequest
+    requestUrl = StringExtensions.SubString(requestUrl, Len(UrlPrefix))
+    
+    Dim urlParts
+    urlParts = Split(requestUrl, "/")
+    
+    Dim partCount As Integer
+    partCount = UBound(urlParts) + 1
+    
+    If partCount > 2 Then
+        ParseRequestUrl.Mode = Invalid
+        Exit Function
+    End If
+    
+    ParseRequestUrl.Sheet = urlParts(0)
+    
+    If partCount = 1 Then
+        ParseRequestUrl.Mode = All
+        Exit Function
+    End If
+    
+    ParseRequestUrl.Key = Trim(urlParts(1))
+    
+    If Len(ParseRequestUrl.Key) = 0 Then
+        ParseRequestUrl.Mode = All
+    Else
+        ParseRequestUrl.Mode = ByKey
+    End If
 End Function
