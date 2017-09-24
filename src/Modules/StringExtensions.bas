@@ -42,3 +42,18 @@ End Function
 Public Function SubString(ByVal text As String, startIndex As Integer) As String
     SubString = Right(text, Len(text) - startIndex)
 End Function
+
+
+Public Function StartsWith(ByVal text As String, ByVal startText As String) As Boolean
+    StartsWith = InStr(text, startText) = 1
+End Function
+
+
+Public Function EndsWith(ByVal text As String, ByVal endText As String) As Boolean
+    EndsWith = Right(text, Len(endText)) = endText
+End Function
+
+
+Public Function CharAt(ByVal text As String, ByVal index As Integer) As String
+    CharAt = Mid(text, index, 1)
+End Function
