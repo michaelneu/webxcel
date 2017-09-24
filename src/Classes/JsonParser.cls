@@ -110,7 +110,7 @@ Public Function ParseObject(obj As String) As JsonObject
                 propertyName = ""
             
             Case " ", vbTab, vbCr, vbLf, vbCrLf
-                If Len(valueBuffer) > 0 Then
+                If Len(valueBuffer) > 0 And Len(propertyName) = 0 Then
                     Err.Raise StatusCode.ErrorMalformedJson
                     Exit Function
                 End If
