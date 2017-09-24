@@ -219,7 +219,7 @@ Private Function ConsumeArray(ByVal text As String, ByRef counter As Long) As St
 End Function
 
 
-Private Function ParseArray(arr As String) As JsonArray
+Public Function ParseArray(arr As String) As JsonArray
     If Not StringExtensions.StartsWith(arr, "[") Or Not StringExtensions.EndsWith(arr, "]") Then
         Err.Raise StatusCode.ErrorMalformedJson
         Exit Function
@@ -277,7 +277,7 @@ Private Function ParseArray(arr As String) As JsonArray
 End Function
 
 
-Private Function ParsePlainText(text As String) As IJson
+Private Function ParsePlainText(text As String) As JsonValue
     If LCase(text) = "null" Then
         Set ParsePlainText = m_null
     Else
