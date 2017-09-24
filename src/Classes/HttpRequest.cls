@@ -118,7 +118,7 @@ Private Sub ParseHeader(line)
     Dim parts
     parts = Split(line, ":", 2)
     
-    m_headers.AddHeader parts(0), parts(1)
+    m_headers.AddHeader Trim(parts(0)), Trim(parts(1))
 End Sub
 
 
