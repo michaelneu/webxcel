@@ -71,6 +71,37 @@ Public Property Get Entries() As Collection
 End Property
 
 
+Public Sub Insert(value)
+    Dim insertionRow As Long
+    
+    insertionRow = m_sheet.Cells(1, m_primaryKey).End(xlDown).Row + 1
+    
+    If insertionRow = 1048577 Then
+        For insertionRow = 2 To 1048576
+            Dim text
+            text = m_sheet.Cells(insertionRow, m_primaryKey).text
+            If Trim(text) = "" Then
+                Exit For
+            End If
+        Next insertionRow
+    End If
+    
+    SetRowValues insertionRow, value
+End Sub
+
+
+Private Sub SetRowValues(row As Long, values)
+    For Each column In m_columns
+        If values.Exists(column.Name) Then
+            Dim insertionCell
+            Set insertionCell = m_sheet.Cells(row, column.Index)
+            
+            insertionCell.value = values(column.Name)
+        End If
+    Next column
+End Sub
+
+
 Public Sub Initialize(worksheet)
     m_primaryKey = -1
     

@@ -15,6 +15,14 @@ Private Sub Class_Initialize()
 End Sub
 
 
+Public Function PrimaryKeyName(sheetName As String) As String
+    Dim table As WorksheetTable
+    Set table = m_tables.FindTable(sheetName)
+    
+    PrimaryKeyName = table.PrimaryKey
+End Function
+
+
 Public Function All(sheetName As String) As JsonArray
     Set All = New JsonArray
 
@@ -121,7 +129,95 @@ End Function
 
 
 Public Sub Insert(sheetName As String, item As JsonObject)
-
+    Dim table As WorksheetTable
+    Set table = m_tables.FindTable(sheetName)
+    
+    Dim itemToInsert
+    Set itemToInsert = CreateObject("Scripting.Dictionary")
+    
+    Dim pkFound As Boolean
+    pkFound = False
+    
+    For Each property In item.PropertyNames
+        If property = table.PrimaryKey Then
+            pkFound = True
+        End If
+        
+        Dim propertyIsForeignKey As Boolean
+        propertyIsForeignKey = False
+        
+        For Each column In table.Columns
+            If "fk_" & property = column Then
+                propertyIsForeignKey = True
+                Exit For
+            End If
+        Next column
+        
+        If propertyIsForeignKey Then
+            Dim foreignPropertyName As String
+            foreignPropertyName = "fk_" & property
+            
+            Dim foreignTableName As String
+            foreignTableName = property
+            
+            Dim foreignTable As WorksheetTable
+            Set foreignTable = m_tables.FindTable(foreignTableName)
+            
+            Dim foreignItem As IJson
+            Set foreignItem = item.GetProperty(property)
+            
+            If TypeName(foreignItem) = "JsonValue" Then
+                Dim foreignItemAsValue As JsonValue
+                Set foreignItemAsValue = foreignItem
+                
+                If foreignItemAsValue.ContainsNull Then
+                    itemToInsert.Add foreignPropertyName, ""
+                Else
+                    Err.Raise StatusCode.ErrorInvalidForeignKeyUsed
+                End If
+            ElseIf TypeName(foreignItem) = "JsonObject" Then
+                Dim foreignItemAsObject As JsonObject
+                Set foreignItemAsObject = foreignItem
+                
+                Dim foreignItemContainsPk As Boolean
+                foreignItemContainsPk = False
+                
+                For Each foreignProperty In foreignItemAsObject.PropertyNames
+                    If foreignProperty = foreignTable.PrimaryKey Then
+                        Dim foreignPkValue As JsonValue
+                        Set foreignPkValue = foreignItemAsObject.GetProperty(foreignProperty)
+                        
+                        itemToInsert.Add foreignPropertyName, foreignPkValue.value
+                        foreignItemContainsPk = True
+                    End If
+                Next foreignProperty
+                
+                If foreignItemContainsPk Then
+                    Insert foreignTableName, foreignItemAsObject
+                Else
+                    Err.Raise StatusCode.ErrorInvalidForeignKeyUsed
+                End If
+            Else
+                Err.Raise StatusCode.ErrorInvalidForeignKeyUsed
+            End If
+        Else
+            Dim value As JsonValue
+            Set value = item.GetProperty(property)
+            
+            If value.ContainsNull Then
+                itemToInsert.Add property, ""
+            Else
+                itemToInsert.Add property, value.value & ""
+            End If
+        End If
+    Next property
+    
+    If Not pkFound Then
+        Err.Raise StatusCode.ErrorDataDoesntContainPrimaryKey
+        Exit Sub
+    End If
+    
+    table.Insert itemToInsert
 End Sub
 
 

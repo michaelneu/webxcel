@@ -27,10 +27,12 @@ End Type
 Private Const UrlPrefix = "/workbook/"
 
 Private m_wrm As WorksheetRelationshipMapper
+Private m_jsonParser As JsonParser
 
 
 Private Sub Class_Initialize()
     Set m_wrm = New WorksheetRelationshipMapper
+    Set m_jsonParser = New JsonParser
 End Sub
 
 
@@ -51,20 +53,42 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
     Dim parsedRequest As EntityRequest
     parsedRequest = ParseRequestUrl(request.Url)
     
-    If parsedRequest.Mode = All And request.RequestMethod = MethodGet Then
-        Dim values As IJson
-        Set values = m_wrm.All(parsedRequest.Sheet)
+    Dim isJsonRequest As Boolean
+    isJsonRequest = RequestContainsJsonData(request)
+    
+    If parsedRequest.Mode = All Then
+        If request.RequestMethod = MethodGet Then
+            Dim values As IJson
+            Set values = m_wrm.All(parsedRequest.Sheet)
+                
+            response.StatusCode = 200
+            response.Body = values.ToJson()
             
-        response.Body = values.ToJson()
-        response.StatusCode = 200
-        
-        requestHandled = True
+            requestHandled = True
+        ElseIf request.RequestMethod = MethodPost And isJsonRequest Then
+            Dim postBody As JsonObject
+            Set postBody = m_jsonParser.ParseObject(request.Body)
+            
+            m_wrm.Insert parsedRequest.Sheet, postBody
+            
+            Dim responseValue As IJson
+            Set responseValue = postBody
+            
+            Dim insertedId As JsonValue
+            Set insertedId = postBody.GetProperty(m_wrm.PrimaryKeyName(parsedRequest.Sheet))
+            
+            response.Headers.AddHeader "Location", UrlPrefix & parsedRequest.Sheet & "/" & insertedId.value
+            response.StatusCode = 201
+            response.Body = responseValue.ToJson()
+            
+            requestHandled = True
+        End If
     ElseIf parsedRequest.Mode = ByKey Then
         If request.RequestMethod = MethodGet Then
-            Dim value As IJson
-            Set value = m_wrm.Find(parsedRequest.Sheet, parsedRequest.Key)
+            Dim getValue As IJson
+            Set getValue = m_wrm.Find(parsedRequest.Sheet, parsedRequest.Key)
             
-            response.Body = value.ToJson()
+            response.Body = getValue.ToJson()
             
             If TypeName(value) = "JsonValue" Then
                 response.StatusCode = 404
@@ -98,7 +122,7 @@ Private Function ParseRequestUrl(requestUrl As String) As EntityRequest
         Exit Function
     End If
     
-    ParseRequestUrl.Sheet = urlParts(0)
+    ParseRequestUrl.sheet = urlParts(0)
     
     If partCount = 1 Then
         ParseRequestUrl.Mode = All
@@ -112,4 +136,22 @@ Private Function ParseRequestUrl(requestUrl As String) As EntityRequest
     Else
         ParseRequestUrl.Mode = ByKey
     End If
+End Function
+
+
+Private Function RequestContainsJsonData(request As HttpRequest) As Boolean
+    RequestContainsJsonData = False
+    
+    For Each header In request.Headers.GetEnumerator
+        Dim n As String
+        n = LCase(header.name)
+        
+        Dim v As String
+        v = LCase(header.value)
+        
+        If LCase(header.name) = "content-type" And LCase(header.value) = "application/json" Then
+            RequestContainsJsonData = True
+            Exit Function
+        End If
+    Next header
 End Function
