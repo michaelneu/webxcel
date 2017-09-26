@@ -97,6 +97,19 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
             End If
             
             requestHandled = True
+        ElseIf request.RequestMethod = MethodDelete Then
+            Dim deleteValue As IJson
+            Set deleteValue = m_wrm.Delete(parsedRequest.Sheet, parsedRequest.Key)
+            
+            If deleteValue Is Nothing Then
+                response.StatusCode = 404
+            Else
+                response.StatusCode = 200
+                response.Headers.AddHeader "Content-Type", "application/json"
+                response.Body = deleteValue.ToJson()
+            End If
+            
+            requestHandled = True
         End If
     End If
     

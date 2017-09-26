@@ -221,11 +221,31 @@ Public Sub Insert(sheetName As String, item As JsonObject)
 End Sub
 
 
+Public Function Delete(sheetName As String, key As String) As JsonObject
+    Dim table As WorksheetTable
+    Set table = m_tables.FindTable(sheetName)
+    
+    Dim entry
+    Set entry = table.Delete(key)
+    
+    If Not entry Is Nothing Then
+        Dim deletedValue As JsonObject
+        Set deletedValue = New JsonObject
+            
+        For Each column In table.Columns
+            Dim val As JsonValue
+            Set val = New JsonValue
+            
+            val.value = entry(column)
+            
+            deletedValue.SetProperty column, val
+        Next column
+        
+        Set Delete = MapEntryRelationships(deletedValue)
+    End If
+End Function
+
+
 Public Sub Update(sheetName As String, item As JsonObject)
-
-End Sub
-
-
-Public Sub Remove(sheetName As String, item As JsonObject)
 
 End Sub

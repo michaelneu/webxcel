@@ -90,6 +90,41 @@ Public Sub Insert(value)
 End Sub
 
 
+Public Function Delete(key As String)
+    Set Delete = Nothing
+    
+    Dim i As Long
+    For i = 2 To m_sheet.Rows.Count
+        Dim row
+        Set row = m_sheet.Rows(i)
+        
+        Dim pkText
+        pkText = Trim(row.Cells(m_primaryKey))
+        
+        If pkText = key Then
+            Dim entry
+            Set entry = CreateObject("Scripting.Dictionary")
+            
+            For Each column In m_columns
+                Dim val
+                val = Trim(row.Cells(column.index).text)
+                
+                If val = "" Then
+                    entry(column.name) = Null
+                Else
+                    entry(column.name) = val
+                End If
+            Next column
+            
+            row.Delete
+            Set Delete = entry
+            
+            Exit Function
+        End If
+    Next i
+End Function
+
+
 Private Sub SetRowValues(row As Long, values)
     For Each column In m_columns
         If values.Exists(column.Name) Then
