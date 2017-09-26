@@ -246,6 +246,23 @@ Public Function Delete(sheetName As String, key As String) As JsonObject
 End Function
 
 
-Public Sub Update(sheetName As String, item As JsonObject)
-
-End Sub
+Public Function Update(sheetName As String, key As String, item As JsonObject) As Boolean
+    Dim table As WorksheetTable
+    Set table = m_tables.FindTable(sheetName)
+    
+    Dim values
+    Set values = CreateObject("Scripting.Dictionary")
+    
+    For Each property In item.PropertyNames
+        Dim val As JsonValue
+        Set val = item.GetProperty(property)
+        
+        If IsNull(val.value) Then
+            values(property) = ""
+        Else
+            values(property) = val.value
+        End If
+    Next property
+    
+    Update = table.Update(key, values)
+End Function

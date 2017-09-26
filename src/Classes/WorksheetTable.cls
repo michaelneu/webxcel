@@ -125,6 +125,27 @@ Public Function Delete(key As String)
 End Function
 
 
+Public Function Update(key As String, values) As Boolean
+    Update = False
+    
+    Dim updateRow As Long
+    For updateRow = 2 To m_sheet.Rows.Count
+        Dim row
+        Set row = m_sheet.Rows(updateRow)
+        
+        Dim pkText
+        pkText = Trim(row.Cells(m_primaryKey))
+        
+        If pkText = key Then
+            SetRowValues updateRow, values
+            Update = True
+            
+            Exit Function
+        End If
+    Next updateRow
+End Function
+
+
 Private Sub SetRowValues(row As Long, values)
     For Each column In m_columns
         If values.Exists(column.Name) Then

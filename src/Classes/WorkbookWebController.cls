@@ -110,6 +110,17 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
             End If
             
             requestHandled = True
+        ElseIf request.RequestMethod = MethodPut And isJsonRequest Then
+            Dim putBody As JsonObject
+            Set putBody = m_jsonParser.ParseObject(request.Body)
+            
+            If m_wrm.Update(parsedRequest.Sheet, parsedRequest.Key, putBody) Then
+                response.StatusCode = 204
+            Else
+                response.StatusCode = 404
+            End If
+            
+            requestHandled = True
         End If
     End If
     
