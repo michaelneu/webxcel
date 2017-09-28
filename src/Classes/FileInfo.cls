@@ -44,6 +44,9 @@ Public Property Get MimeType() As String
             
         Case "png", "jpg", "jpeg", "gif"
             MimeType = "image/" & ext
+            
+        Case "css"
+            MimeType = "text/css"
     
         Case Else
             MimeType = "application/octet-stream"
