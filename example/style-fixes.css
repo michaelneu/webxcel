@@ -1,0 +1,29 @@
+.top-nav {
+  height: 5em;
+  font-size: 2.75em;
+  margin-bottom: 1em;
+}
+
+.page-title {
+  line-height: 7em;
+}
+
+.card .card-content input[type="checkbox"] + label {
+  overflow-x: hidden;
+}
+
+.card .card-content input[type="checkbox"] + label .title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 50vw;
+}
+
+.card .card-content input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+  color: #999 !important;
+}
+
+.l3 {
+  text-align: right;
+}
