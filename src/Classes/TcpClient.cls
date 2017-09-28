@@ -13,15 +13,19 @@ Private m_clientSocket As Long
 
 
 Public Sub Initialize(ByVal socket As Long)
+    Dim timeout As Long
+    timeout = 500
+    
+    Dim result As Long
+    result = wsock32.setsockopt(socket, wsock32.SOL_SOCKET, wsock32.SO_RCVTIMEO, timeout, 4)
+    
     m_clientSocket = socket
 End Sub
 
 
-Public Sub SendString(ByVal message As String)
-    Dim result As Long
-    
-    result = wsock32.send(m_clientSocket, ByVal message, Len(message), 0)
-End Sub
+Public Function SendString(ByVal message As String) As Long
+    SendString = wsock32.send(m_clientSocket, ByVal message, Len(message), 0)
+End Function
 
 
 Public Function ReceiveString() As String
@@ -32,28 +36,15 @@ Public Function ReceiveString() As String
     message = ""
     
     Do
+        buffer = ""
         readBytes = wsock32.recv(m_clientSocket, buffer, Len(buffer), 0)
         
         If readBytes > 0 Then
-            message = message & buffer
+            message = message & Trim(buffer)
         End If
-    Loop While readBytes = Len(buffer)
+    Loop While readBytes > 0
     
-    ReceiveString = TrimNullCharacters(message)
-End Function
-
-
-Private Function TrimNullCharacters(ByVal text As String) As String
-    Dim nullCharacterPosition As Long
-    nullCharacterPosition = InStr(text, Chr(0))
-
-    If nullCharacterPosition = 0 Then
-        text = ""
-    ElseIf nullCharacterPosition > 0 Then
-        text = Left(text, nullCharacterPosition - 1)
-    End If
-
-    TrimNullCharacters = text
+    ReceiveString = Trim(message)
 End Function
 
 
