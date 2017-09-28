@@ -173,7 +173,7 @@ Private Function RequestContainsJsonData(request As HttpRequest) As Boolean
         Dim v As String
         v = LCase(header.value)
         
-        If LCase(header.name) = "content-type" And LCase(header.value) = "application/json" Then
+        If LCase(header.name) = "content-type" And (LCase(header.value) = "application/json" Or LCase(header.value) = "application/json;charset=utf-8") Then
             RequestContainsJsonData = True
             Exit Function
         End If
