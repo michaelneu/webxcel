@@ -46,7 +46,8 @@ ForEach ($file in $files)
     AddScriptToBook $book $file
 }
 
-$build = Resolve-Path "build"
+$cwd = (Resolve-Path .\).Path
+$build = [IO.Path]::Combine($cwd, "build")
 MkDir -Force $build > $null
 
 $filename = [IO.Path]::Combine($build, $XLSM_FILE_NAME)
