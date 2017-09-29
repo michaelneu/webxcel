@@ -12,15 +12,18 @@ $book = $excel.Workbooks.Add($missing)
 Function AddScriptToBook($book, $file)
 {
     $extension = $file.Extension.ToLower()
+    $lines = New-Object System.Collections.ArrayList
 
-    $lines = [IO.File]::ReadAllLines($file.FullName)
-    $lines = [Linq.Enumerable]::SkipWhile($lines, [Func[string, bool]]{ param($x)       $x.StartsWith("VERSION") `
-                                                                                    -or $x.StartsWith("BEGIN") `
-                                                                                    -or $x.StartsWith("  ") `
-                                                                                    -or $x.StartsWith("END") `
-                                                                                    -or $x.StartsWith("Attribute") `
-                                })
+    ForEach ($line in [IO.File]::ReadAllLines($file.FullName))
+    {
+        $ignore = $lines.Add($line)
+    }
 
+    While ($lines[0].StartsWith("VERSION") -or $lines[0].StartsWith("BEGIN") -or $lines[0].StartsWith("  ") -or $lines[0].StartsWith("END") -or $lines[0].StartsWith("Attribute"))
+    {
+        $ignore = $lines.RemoveAt(0)
+    }
+    
     $code = [String]::Join("`r`n", $lines)
 
     $moduleType = $COMPONENT_TYPE_MODULE
