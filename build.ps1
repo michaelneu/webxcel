@@ -24,7 +24,7 @@ Function AddScriptToBook($book, $file)
         $ignore = $lines.RemoveAt(0)
     }
     
-    $code = [String]::Join("`r`n", $lines)
+    $code = [String]::Join("`r`n", $lines.ToArray())
 
     $moduleType = $COMPONENT_TYPE_MODULE
 
