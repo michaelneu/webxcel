@@ -13,9 +13,15 @@ To configure a new table, simply insert your column names in the first row of an
 
 ![worksheet relationship mapping](images/wrm-schema.png)
 
-When accessing `GET /workbook/cities`, webxcel will return a fully mapped JSON object: 
+When accessing `GET /workbook/cities`, webxcel will return a fully mapped JSON object (response formatted for better readability): 
 
-```json
+```http
+HTTP/1.1 200 Nobody Needs This Anyway
+Content-Type: application/json
+Server: Microsoft Excel/16.0
+Content-Length: 200
+Connection: close
+
 [
   {
     "id": "1",
