@@ -59,6 +59,8 @@ Public Sub Serve(ByVal port As Long)
         If Not lockfile.Exists Then
             Exit Do
         End If
+        
+        DoEvents
     Loop
     
     m_tcpServer.Dispose
