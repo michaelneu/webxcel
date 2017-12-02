@@ -52,19 +52,19 @@ Public Const INVALID_SOCKET = -1
 Public Const SOL_SOCKET = 65535
 Public Const SO_RCVTIMEO = &H1006
 
-Public Declare Function WSAStartup Lib "wsock32.dll" (ByVal versionRequired As Long, wsa As WSADATA) As Long
-Public Declare Function WSAGetLastError Lib "wsock32.dll" () As Long
-Public Declare Function WSACleanup Lib "wsock32.dll" () As Long
-Public Declare Function socket Lib "wsock32.dll" (ByVal addressFamily As Long, ByVal socketType As Long, ByVal protocol As Long) As Long
-Public Declare Function htons Lib "wsock32.dll" (ByVal hostshort As Long) As Integer
-Public Declare Function bind Lib "wsock32.dll" (ByVal socket As Long, name As sockaddr_in, ByVal nameLength As Integer) As Long
-Public Declare Function listen Lib "wsock32.dll" (ByVal socket As Long, ByVal backlog As Integer) As Long
-Public Declare Function select_ Lib "wsock32.dll" Alias "select" (ByVal nfds As Integer, readfds As fd_set, writefds As fd_set, exceptfds As fd_set, timeout As timeval) As Integer
-Public Declare Function accept Lib "wsock32.dll" (ByVal socket As Long, clientAddress As sockaddr, clientAddressLength As Integer) As Long
-Public Declare Function setsockopt Lib "wsock32.dll" (ByVal socket As Long, ByVal level As Long, ByVal optname As Long, ByRef optval As Long, ByVal optlen As Integer) As Long
-Public Declare Function send Lib "wsock32.dll" (ByVal socket As Long, buffer As String, ByVal bufferLength As Long, ByVal flags As Long) As Long
-Public Declare Function recv Lib "wsock32.dll" (ByVal socket As Long, ByVal buffer As String, ByVal bufferLength As Long, ByVal flags As Long) As Long
-Public Declare Function closesocket Lib "wsock32.dll" (ByVal s As Long) As Long
+Public Declare PtrSafe Function WSAStartup Lib "wsock32.dll" (ByVal versionRequired As Long, wsa As WSADATA) As Long
+Public Declare PtrSafe Function WSAGetLastError Lib "wsock32.dll" () As Long
+Public Declare PtrSafe Function WSACleanup Lib "wsock32.dll" () As Long
+Public Declare PtrSafe Function socket Lib "wsock32.dll" (ByVal addressFamily As Long, ByVal socketType As Long, ByVal protocol As Long) As Long
+Public Declare PtrSafe Function htons Lib "wsock32.dll" (ByVal hostshort As Long) As Integer
+Public Declare PtrSafe Function bind Lib "wsock32.dll" (ByVal socket As Long, name As sockaddr_in, ByVal nameLength As Integer) As Long
+Public Declare PtrSafe Function listen Lib "wsock32.dll" (ByVal socket As Long, ByVal backlog As Integer) As Long
+Public Declare PtrSafe Function select_ Lib "wsock32.dll" Alias "select" (ByVal nfds As Integer, readfds As fd_set, writefds As fd_set, exceptfds As fd_set, timeout As timeval) As Integer
+Public Declare PtrSafe Function accept Lib "wsock32.dll" (ByVal socket As Long, clientAddress As sockaddr, clientAddressLength As Integer) As Long
+Public Declare PtrSafe Function setsockopt Lib "wsock32.dll" (ByVal socket As Long, ByVal level As Long, ByVal optname As Long, ByRef optval As Long, ByVal optlen As Integer) As Long
+Public Declare PtrSafe Function send Lib "wsock32.dll" (ByVal socket As Long, buffer As String, ByVal bufferLength As Long, ByVal flags As Long) As Long
+Public Declare PtrSafe Function recv Lib "wsock32.dll" (ByVal socket As Long, ByVal buffer As String, ByVal bufferLength As Long, ByVal flags As Long) As Long
+Public Declare PtrSafe Function closesocket Lib "wsock32.dll" (ByVal s As Long) As Long
 
 
 Public Sub FD_ZERO_MACRO(ByRef s As fd_set)
