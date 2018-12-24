@@ -41,6 +41,22 @@ Public Property Get Headers() As HttpHeaderCollection
     Set Headers = m_headers
 End Property
 
+Private Function HttpStatusString(Status As Integer) As String
+    If Status = 200 Then
+        HttpStatusString = "OK"
+    ElseIf Status = 201 Then
+        HttpStatusString = "Created"
+    ElseIf Status = 204 Then
+        HttpStatusString = "No Content"
+    ElseIf Status = 404 Then
+        HttpStatusString = "Not Found"
+    ElseIf Status = 500 Then
+        HttpStatusString = "Internal Server Error"
+    Else 
+        HttpStatusString = "Nobody Needs This Anyway"
+    End If
+End Function
+
 
 Public Function ToString() As String
     Headers.AddHeader "Server", "Microsoft Excel/" & Application.Version
@@ -48,7 +64,7 @@ Public Function ToString() As String
     Headers.AddHeader "Connection", "close"
 
     Dim text As String
-    text = "HTTP/1.1 " & StatusCode & " Nobody Needs This Anyway" & vbCrLf
+    text = "HTTP/1.1 " & StatusCode & " " & HttpStatusString(StatusCode) & vbCrLf
     
     For Each header In Headers.GetEnumerator
         text = text & header.name & ": " & header.Value & vbCrLf
