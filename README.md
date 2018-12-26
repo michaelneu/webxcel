@@ -51,6 +51,9 @@ Connection: close
 
 No need to spin up a cloud server or function-as-a-service provider, implement rich server side logic right in Microsoft Excel using the built-in tools you already know and love. Using Microsoft Excel's immersive charting, you can gather even deeper insights from your data. 
 
+##### A note about static files
+Webxcel has a fully capable static file server, with the server root located in the directory of `Webxcel.xlsm`.
+However, it doesn't automatically locate your index.html. This is a [known issue](https://github.com/michaelneu/webxcel/issues/14) and will be updated in a future release. Your app will work as normal if you explicitly navigate to `/index.html`.
 
 #### Scalable
 
@@ -80,6 +83,13 @@ To quickstart development, check out the [example folder](example) for a simple 
 #### Creating new projects
 
 The `build.ps1` PowerShell script creates an empty webxcel project in `build/webxcel.xlsm`, which you can alter to create your table schema. You can also import the classes and modules by hand, but this will consume considerably more time since the import dialog only allows you to select one file at a time.
+
+In order for the build script to succeed, you may have to make a few changes to your Excel settings. Open the Trust Center in the options menu, select Macro Settings and check the following options:
+- Enable all macros
+- Trust access to the VBA project object model
+
+If you can't run the build script at all, use the following command to temporarily enable PowerShell scripts for the duration of your PowerShell session:
+```Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process```
 
 #### Running webxcel
 
