@@ -47,7 +47,7 @@ Public Function ToString() As String
     Headers.AddHeader "Connection", "close"
 
     Dim text As String
-    text = "HTTP/1.1 " & StatusCode & " " & HttpStatusString(StatusCode) & vbCrLf
+    text = "HTTP/1.1 " & StatusCode & " " & HttpStatusMessages(StatusCode) & vbCrLf
     
     For Each header In Headers.GetEnumerator
         text = text & header.name & ": " & header.Value & vbCrLf

@@ -1,131 +1,69 @@
-Public Function HttpStatusString(Status As Integer) As String
-    If Status = 100 Then
-        HttpStatusString = "Continue"
-    ElseIf Status = 101 Then
-        HttpStatusString = "Switching Protocols"
-    ElseIf Status = 102 Then
-        HttpStatusString = "Processing"
-    ElseIf Status = 200 Then
-        HttpStatusString = "OK"
-    ElseIf Status = 201 Then
-        HttpStatusString = "Created"
-    ElseIf Status = 202 Then
-        HttpStatusString = "Accepted"
-    ElseIf Status = 203 Then
-        HttpStatusString = "Non-authoritative Information"
-    ElseIf Status = 204 Then
-        HttpStatusString = "No Content"
-    ElseIf Status = 205 Then
-        HttpStatusString = "Reset Content"
-    ElseIf Status = 206 Then
-        HttpStatusString = "Partial Content"
-    ElseIf Status = 207 Then
-        HttpStatusString = "Multi-Status"
-    ElseIf Status = 208 Then
-        HttpStatusString = "Already Reported"
-    ElseIf Status = 226 Then
-        HttpStatusString = "IM Used"
-    ElseIf Status = 300 Then
-        HttpStatusString = "Multiple Choices"
-    ElseIf Status = 301 Then
-        HttpStatusString = "Moved Permanently"
-    ElseIf Status = 302 Then
-        HttpStatusString = "Found"
-    ElseIf Status = 303 Then
-        HttpStatusString = "See Other"
-    ElseIf Status = 304 Then
-        HttpStatusString = "Not Modified"
-    ElseIf Status = 305 Then
-        HttpStatusString = "Use Proxy"
-    ElseIf Status = 307 Then
-        HttpStatusString = "Temporary Redirect"
-    ElseIf Status = 308 Then
-        HttpStatusString = "Permanent Redirect"
-    ElseIf Status = 400 Then
-        HttpStatusString = "Bad Request"
-    ElseIf Status = 401 Then
-        HttpStatusString = "Unauthorized"
-    ElseIf Status = 402 Then
-        HttpStatusString = "Payment Required"
-    ElseIf Status = 403 Then
-        HttpStatusString = "Forbidden"
-    ElseIf Status = 404 Then
-        HttpStatusString = "Not Found"
-    ElseIf Status = 405 Then
-        HttpStatusString = "Method Not Allowed"
-    ElseIf Status = 406 Then
-        HttpStatusString = "Not Acceptable"
-    ElseIf Status = 407 Then
-        HttpStatusString = "Proxy Authentication Required"
-    ElseIf Status = 408 Then
-        HttpStatusString = "Request Timeout"
-    ElseIf Status = 409 Then
-        HttpStatusString = "Conflict"
-    ElseIf Status = 410 Then
-        HttpStatusString = "Gone"
-    ElseIf Status = 411 Then
-        HttpStatusString = "Length Required"
-    ElseIf Status = 412 Then
-        HttpStatusString = "Precondition Failed"
-    ElseIf Status = 413 Then
-        HttpStatusString = "Payload Too Large"
-    ElseIf Status = 414 Then
-        HttpStatusString = "Request-URI Too Long"
-    ElseIf Status = 415 Then
-        HttpStatusString = "Unsupported Media Type"
-    ElseIf Status = 416 Then
-        HttpStatusString = "Requested Range Not Satisfiable"
-    ElseIf Status = 417 Then
-        HttpStatusString = "Expectation Failed"
-    ElseIf Status = 418 Then
-        HttpStatusString = "I'm a teapot"
-    ElseIf Status = 421 Then
-        HttpStatusString = "Misdirected Request"
-    ElseIf Status = 422 Then
-        HttpStatusString = "Unprocessable Entity"
-    ElseIf Status = 423 Then
-        HttpStatusString = "Locked"
-    ElseIf Status = 424 Then
-        HttpStatusString = "Failed Dependency"
-    ElseIf Status = 426 Then
-        HttpStatusString = "Upgrade Required"
-    ElseIf Status = 428 Then
-        HttpStatusString = "Precondition Required"
-    ElseIf Status = 429 Then
-        HttpStatusString = "Too Many Requests"
-    ElseIf Status = 431 Then
-        HttpStatusString = "Request Header Fields Too Large"
-    ElseIf Status = 444 Then
-        HttpStatusString = "Connection Closed Without Response"
-    ElseIf Status = 451 Then
-        HttpStatusString = "Unavailable For Legal Reasons"
-    ElseIf Status = 499 Then
-        HttpStatusString = "Client Closed Request"
-    ElseIf Status = 500 Then
-        HttpStatusString = "Internal Server Error"
-    ElseIf Status = 501 Then
-        HttpStatusString = "Not Implemented"
-    ElseIf Status = 502 Then
-        HttpStatusString = "Bad Gateway"
-    ElseIf Status = 503 Then
-        HttpStatusString = "Service Unavailable"
-    ElseIf Status = 504 Then
-        HttpStatusString = "Gateway Timeout"
-    ElseIf Status = 505 Then
-        HttpStatusString = "HTTP Version Not Supported"
-    ElseIf Status = 506 Then
-        HttpStatusString = "Variant Also Negotiates"
-    ElseIf Status = 507 Then
-        HttpStatusString = "Insufficient Storage"
-    ElseIf Status = 508 Then
-        HttpStatusString = "Loop Detected"
-    ElseIf Status = 510 Then
-        HttpStatusString = "Not Extended"
-    ElseIf Status = 511 Then
-        HttpStatusString = "Network Authentication Required"
-    ElseIf Status = 599 Then
-        HttpStatusString = "Network Connect Timeout Error"
-    Else
-        HttpStatusString = "What The HECK is this"
-    End If
-End Function
+Option Private Module ' To hide the init sub in the macro list
+Public HttpStatusMessages as Object
+
+Sub InitializeHttpStatusDictionary()
+    Set HttpStatusMessages = CreateObject("Scripting.Dictionary")
+    HttpStatusMessages.Add 100, "Continue"
+    HttpStatusMessages.Add 101, "Switching Protocols"
+    HttpStatusMessages.Add 102, "Processing"
+    HttpStatusMessages.Add 200, "OK"
+    HttpStatusMessages.Add 201, "Created"
+    HttpStatusMessages.Add 202, "Accepted"
+    HttpStatusMessages.Add 203, "Non-authoritative Information"
+    HttpStatusMessages.Add 204, "No Content"
+    HttpStatusMessages.Add 205, "Reset Content"
+    HttpStatusMessages.Add 206, "Partial Content"
+    HttpStatusMessages.Add 207, "Multi-Status"
+    HttpStatusMessages.Add 208, "Already Reported"
+    HttpStatusMessages.Add 226, "IM Used"
+    HttpStatusMessages.Add 300, "Multiple Choices"
+    HttpStatusMessages.Add 301, "Moved Permanently"
+    HttpStatusMessages.Add 302, "Found"
+    HttpStatusMessages.Add 303, "See Other"
+    HttpStatusMessages.Add 304, "Not Modified"
+    HttpStatusMessages.Add 305, "Use Proxy"
+    HttpStatusMessages.Add 307, "Temporary Redirect"
+    HttpStatusMessages.Add 308, "Permanent Redirect"
+    HttpStatusMessages.Add 400, "Bad Request"
+    HttpStatusMessages.Add 401, "Unauthorized"
+    HttpStatusMessages.Add 402, "Payment Required"
+    HttpStatusMessages.Add 403, "Forbidden"
+    HttpStatusMessages.Add 404, "Not Found"
+    HttpStatusMessages.Add 405, "Method Not Allowed"
+    HttpStatusMessages.Add 406, "Not Acceptable"
+    HttpStatusMessages.Add 407, "Proxy Authentication Required"
+    HttpStatusMessages.Add 408, "Request Timeout"
+    HttpStatusMessages.Add 409, "Conflict"
+    HttpStatusMessages.Add 410, "Gone"
+    HttpStatusMessages.Add 411, "Length Required"
+    HttpStatusMessages.Add 412, "Precondition Failed"
+    HttpStatusMessages.Add 413, "Payload Too Large"
+    HttpStatusMessages.Add 414, "Request-URI Too Long"
+    HttpStatusMessages.Add 415, "Unsupported Media Type"
+    HttpStatusMessages.Add 416, "Requested Range Not Satisfiable"
+    HttpStatusMessages.Add 417, "Expectation Failed"
+    HttpStatusMessages.Add 418, "I'm a teapot"
+    HttpStatusMessages.Add 421, "Misdirected Request"
+    HttpStatusMessages.Add 422, "Unprocessable Entity"
+    HttpStatusMessages.Add 423, "Locked"
+    HttpStatusMessages.Add 424, "Failed Dependency"
+    HttpStatusMessages.Add 426, "Upgrade Required"
+    HttpStatusMessages.Add 428, "Precondition Required"
+    HttpStatusMessages.Add 429, "Too Many Requests"
+    HttpStatusMessages.Add 431, "Request Header Fields Too Large"
+    HttpStatusMessages.Add 444, "Connection Closed Without Response"
+    HttpStatusMessages.Add 451, "Unavailable For Legal Reasons"
+    HttpStatusMessages.Add 499, "Client Closed Request"
+    HttpStatusMessages.Add 500, "Internal Server Error"
+    HttpStatusMessages.Add 501, "Not Implemented"
+    HttpStatusMessages.Add 502, "Bad Gateway"
+    HttpStatusMessages.Add 503, "Service Unavailable"
+    HttpStatusMessages.Add 504, "Gateway Timeout"
+    HttpStatusMessages.Add 505, "HTTP Version Not Supported"
+    HttpStatusMessages.Add 506, "Variant Also Negotiates"
+    HttpStatusMessages.Add 507, "Insufficient Storage"
+    HttpStatusMessages.Add 508, "Loop Detected"
+    HttpStatusMessages.Add 510, "Not Extended"
+    HttpStatusMessages.Add 511, "Network Authentication Required"
+    HttpStatusMessages.Add 599, "Network Connect Timeout Error"
+End Sub
