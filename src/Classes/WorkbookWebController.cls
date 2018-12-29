@@ -90,9 +90,10 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
             
             response.Body = getValue.ToJson()
             
-            If TypeName(value) = "JsonValue" Then
+            ' this is a null value check in disguise
+            If TypeName(getValue) = "JsonValue" Then
                 response.StatusCode = 404
-            Else
+            Else ' type is JsonObject
                 response.StatusCode = 200
             End If
             
