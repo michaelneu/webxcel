@@ -52,8 +52,7 @@ Connection: close
 No need to spin up a cloud server or function-as-a-service provider, implement rich server side logic right in Microsoft Excel using the built-in tools you already know and love. Using Microsoft Excel's immersive charting, you can gather even deeper insights from your data. 
 
 ##### A note about static files
-Webxcel has a fully capable static file server, with the server root located in the directory of `Webxcel.xlsm`.
-However, it doesn't automatically locate your index.html. This is a [known issue](https://github.com/michaelneu/webxcel/issues/14) and will be updated in a future release. Your app will work as normal if you explicitly navigate to `/index.html`.
+Webxcel has a fully capable static file server, with the server root located in the directory of `Webxcel.xlsm`. However, it doesn't automatically locate your index.html. This is a [known issue](https://github.com/michaelneu/webxcel/issues/14) and will be updated in a future release. Your app will work as normal if you explicitly navigate to `/index.html`.
 
 #### Scalable
 
@@ -88,8 +87,10 @@ In order for the build script to succeed, you may have to make a few changes to 
 - Enable all macros
 - Trust access to the VBA project object model
 
-If you can't run the build script at all, use the following command to temporarily enable PowerShell scripts for the duration of your PowerShell session:
-```Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process```
+If you can't run the build script at all, use the following command to temporarily enable PowerShell scripts for the duration of your [PowerShell session](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6#notes):
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process
+```
 
 #### Running webxcel
 
