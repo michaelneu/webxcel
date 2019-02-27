@@ -25,7 +25,7 @@ Public Function TrimRight(text As String, c As String) As String
     
     Do While textLength > 0
         Dim lastCharacter As String
-        lastCharacter = Left(text, 1)
+        lastCharacter = Right(text, 1)
         
         If lastCharacter <> c Then
             Exit Do
@@ -57,3 +57,4 @@ End Function
 Public Function CharAt(ByVal text As String, ByVal index As Integer) As String
     CharAt = Mid(text, index, 1)
 End Function
+
