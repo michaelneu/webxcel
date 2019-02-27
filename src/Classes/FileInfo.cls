@@ -39,7 +39,7 @@ Public Property Get MimeType() As String
         Case "json", "xml"
             MimeType = "application/" & ext
             
-        Case "html", "txt"
+        Case "html", "htm", "txt"
             MimeType = "text/html"
             
         Case "png", "jpg", "jpeg", "gif"
