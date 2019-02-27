@@ -10,10 +10,15 @@ Attribute VB_Exposed = False
 Implements IWebController
 
 Private m_directory As String
+Private m_indexFiles As Collection
 
 
 Private Sub Class_Initialize()
     m_directory = ActiveWorkbook.Path
+    
+    Set m_indexFiles = New Collection
+    m_indexFiles.Add "index.html"
+    m_indexFiles.Add "index.htm"
 End Sub
 
 
@@ -27,6 +32,11 @@ Public Property Let Directory(val As String)
     val = StringExtensions.TrimRight(val, "\")
     
     m_directory = val
+End Property
+
+
+Public Property Get IndexFiles() As Collection
+    Set IndexFiles = m_indexFiles
 End Property
 
 
@@ -51,6 +61,27 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
         response.StatusCode = 200
         response.Headers.AddHeader "Content-Type", file.MimeType
         response.Body = file.ReadString
+    ElseIf m_indexFiles.Count > 0 Then
+        Dim foundIndexFile As Boolean
+        foundIndexFile = False
+        
+        For Each indexFile In m_indexFiles
+            Set file = New FileInfo
+            file.Initialize PathJoin(filename, indexFile)
+
+            If file.Exists Then
+                response.StatusCode = 200
+                response.Headers.AddHeader "Content-Type", file.MimeType
+                response.Body = file.ReadString
+                
+                foundIndexFile = True
+                Exit For
+            End If
+        Next
+
+        If foundIndexFile = False Then
+            response.StatusCode = 404
+        End If
     Else
         response.StatusCode = 404
     End If
