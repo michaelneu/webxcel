@@ -51,8 +51,6 @@ Connection: close
 
 No need to spin up a cloud server or function-as-a-service provider, implement rich server side logic right in Microsoft Excel using the built-in tools you already know and love. Using Microsoft Excel's immersive charting, you can gather even deeper insights from your data. 
 
-##### A note about static files
-Webxcel has a fully capable static file server, with the server root located in the directory of `Webxcel.xlsm`. However, it doesn't automatically locate your index.html. This is a [known issue](https://github.com/michaelneu/webxcel/issues/14) and will be updated in a future release. Your app will work as normal if you explicitly navigate to `/index.html`.
 
 #### Scalable
 
