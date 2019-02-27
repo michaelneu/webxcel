@@ -1,6 +1,5 @@
 Attribute VB_Name = "Main"
 Public Sub Main()
-    InitializeHttpStatusDictionary
     Dim server As HttpServer
     Set server = New HttpServer
     
