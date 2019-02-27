@@ -12,6 +12,8 @@ Private m_controllers As WebControllerCollection
 
 
 Private Sub Class_Initialize()
+    InitializeHttpStatusDictionary
+
     Set m_tcpServer = New TcpServer
     Set m_controllers = New WebControllerCollection
 End Sub
