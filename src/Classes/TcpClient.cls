@@ -12,6 +12,19 @@ Option Explicit
 Private m_clientSocket As Long
 
 
+Public Sub ConnectTo(host As String, port As Long)
+    Dim address As wsock32.sockaddr_in
+    address.sin_addr.s_addr = wsock32.inet_addr(host)
+    address.sin_family = wsock32.AF_INET
+    address.sin_port = wsock32.htons(port)
+    
+    m_clientSocket = wsock32.socket(wsock32.AF_INET, wsock32.SOCK_STREAM, 0)
+
+    Dim connectResult As Long
+    connectResult = wsock32.connect(m_clientSocket, address, 16)
+End Sub
+
+
 Public Sub Initialize(ByVal socket As Long)
     Dim timeout As Long
     timeout = 500
@@ -49,5 +62,5 @@ End Function
 
 
 Public Sub Dispose()
-    wsock32.closesocket (m_clientSocket)
+    wsock32.closesocket m_clientSocket
 End Sub
