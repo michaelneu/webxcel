@@ -29,7 +29,7 @@ End Function
 
 
 Public Function BytesToInt16(ByVal bytes As String) As Integer
-    BytesToInt16 = Asc(CharAt(bytes, 2)) * integer0xFF + Asc(CharAt(bytes, 1))
+    BytesToInt16 = Asc(CharAt(bytes, 1)) * integer0xFF + Asc(CharAt(bytes, 2))
 End Function
 
 
