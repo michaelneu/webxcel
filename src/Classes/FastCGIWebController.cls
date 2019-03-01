@@ -72,36 +72,12 @@ Private Sub SendParams()
     header.MessageType = FastCGI.FASTCGI_TYPE_PARAMS
     header.ContentLength = Len(bytes)
     header.PaddingLength = 0
-    
+
     Set record = header
     bytes = record.ToBytes() & bytes
-    
     m_clientSocket.SendString bytes
+
+    header.ContentLength = 0
+    Set record = header
+    m_clientSocket.SendString record.ToBytes()
 End Sub
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
