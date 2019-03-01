@@ -1,0 +1,6 @@
+Attribute VB_Name = "FastCGI"
+Public Const FASTCGI_TYPE_BEGIN_REQUEST = 1
+Public Const FASTCGI_TYPE_END_REQUEST = 3
+Public Const FASTCGI_TYPE_PARAMS = 4
+Public Const FASTCGI_TYPE_STDIN = 5
+Public Const FASTCGI_TYPE_STDOUT = 6
