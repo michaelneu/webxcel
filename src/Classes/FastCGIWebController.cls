@@ -75,9 +75,41 @@ Private Sub SendParams()
 
     Set record = header
     bytes = record.ToBytes() & bytes
-    m_clientSocket.SendString bytes
 
     header.ContentLength = 0
     Set record = header
-    m_clientSocket.SendString record.ToBytes()
+    bytes = bytes & record.ToBytes()
+
+    m_clientSocket.SendString bytes
+End Sub
+
+
+Private Sub SendInput(text As String)
+    Dim stdin As FastCGIStream
+    Set stdin = New FastCGIStream
+    stdin.Content = text
+
+    Dim bytes As String
+    Dim record As IFastCGIRecord
+    Set record = stdin
+    bytes = record.ToBytes()
+
+    Dim header As FastCGIHeader
+    Set header = New FastCGIHeader
+    header.ProtocolVersion = 1
+    header.RequestId = m_requestId
+    header.MessageType = FastCGI.FASTCGI_TYPE_STDIN
+    header.ContentLength = Len(bytes)
+    header.PaddingLength = 0
+
+    Set record = header
+    bytes = record.ToBytes() & bytes
+
+    If Len(text) > 0 Then
+        header.ContentLength = 0
+        Set record = header
+        bytes = bytes & record.ToBytes()
+    End If
+
+    m_clientSocket.SendString bytes
 End Sub
