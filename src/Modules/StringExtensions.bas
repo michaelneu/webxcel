@@ -39,8 +39,12 @@ Public Function TrimRight(text As String, c As String) As String
 End Function
 
 
-Public Function SubString(ByVal text As String, startIndex As Integer) As String
-    SubString = Right(text, Len(text) - startIndex)
+Public Function Substring(ByVal text As String, startIndex As Integer, Optional length As Variant) As String
+    If IsMissing(length) Or TypeName(length) <> "Integer" Then
+        length = Len(text) - startIndex
+    End If
+
+    Substring = Left(Right(text, Len(text) - startIndex), length)
 End Function
 
 
