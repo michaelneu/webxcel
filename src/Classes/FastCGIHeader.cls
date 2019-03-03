@@ -18,12 +18,27 @@ Public Reserved As String
 
 
 Private Sub Class_Initialize()
-    Dim bytes As String * 1
-    Reserved = bytes
+    Reserved = StringExtensions.Repeat(Chr(0), 1)
 End Sub
 
 
 Private Sub IFastCGIRecord_FromBytes(ByVal bytes As String)
+    ProtocolVersion = Marshal.BytesToInt8(bytes)
+    bytes = StringExtensions.Substring(bytes, 1)
+
+    MessageType = Marshal.BytesToInt8(bytes)
+    bytes = StringExtensions.Substring(bytes, 1)
+
+    RequestId = Marshal.BytesToInt16(bytes)
+    bytes = StringExtensions.Substring(bytes, 2)
+
+    ContentLength = Marshal.BytesToInt16(bytes)
+    bytes = StringExtensions.Substring(bytes, 2)
+
+    PaddingLength = Marshal.BytesToInt8(bytes)
+    bytes = StringExtensions.Substring(bytes, 1)
+
+    Reserved = bytes
 End Sub
 
 

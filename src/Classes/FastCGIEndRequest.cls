@@ -9,9 +9,15 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Implements IFastCGIRecord
 
+Private m_header As FastCGIHeader
 Public AppStatus As Long
 Public ProtocolStatus As Byte
 Public Reserved As String
+
+
+Private Sub Class_Initialize()
+    
+End Sub
 
 
 Private Sub IFastCGIRecord_FromBytes(ByVal bytes As String)

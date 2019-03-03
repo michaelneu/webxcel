@@ -9,10 +9,17 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Implements IFastCGIRecord
 
+Private m_header As FastCGIHeader
 Private m_params As Collection
 
 
 Private Sub Class_Initialize()
+    Set m_header = New FastCGIHeader
+    m_header.ProtocolVersion = 1
+    m_header.RequestId = m_requestId
+    m_header.MessageType = FastCGI.FASTCGI_TYPE_PARAMS
+    m_header.PaddingLength = 0
+
     Set m_params = New Collection
 End Sub
 
@@ -33,14 +40,16 @@ End Sub
 
 
 Private Function IFastCGIRecord_ToBytes() As String
+    Dim record As IFastCGIRecord
     Dim bytes As String
     bytes = ""
 
     For Each param In m_params
-        Dim record As IFastCGIRecord
         Set record = param
         bytes = bytes & record.ToBytes()
     Next
 
-    IFastCGIRecord_ToBytes = bytes
+    m_header.ContentLength = Len(bytes)
+    Set record = m_header
+    IFastCGIRecord_ToBytes = record.ToBytes() & bytes
 End Function
