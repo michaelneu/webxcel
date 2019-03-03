@@ -62,3 +62,12 @@ Public Function CharAt(ByVal text As String, ByVal index As Integer) As String
     CharAt = Mid(text, index, 1)
 End Function
 
+
+Public Function Repeat(ByVal text As String, ByVal count As Integer) As String
+    Repeat = ""
+    
+    Dim i As Integer
+    For i = 1 To count
+        Repeat = Repeat & text
+    Next
+End Function
