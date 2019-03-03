@@ -15,14 +15,14 @@ Public Sub Initialize(clientSocket As TcpClient)
 End Sub
 
 
-Private Sub WriteBegin()
+Public Sub WriteBegin()
     Dim record As IFastCGIRecord
     Set record = New FastCGIBeginRequest
     record.WriteToTcpClient m_clientSocket
 End Sub
 
 
-Private Function ReadBegin() As FastCGIBeginRequest
+Public Function ReadBegin() As FastCGIBeginRequest
     Dim record As IFastCGIRecord
     Set record = New FastCGIBeginRequest
     record.ReadFromTcpClient m_clientSocket
@@ -30,7 +30,7 @@ Private Function ReadBegin() As FastCGIBeginRequest
 End Function
 
 
-Private Sub WriteParams()
+Public Sub WriteParams()
     Dim params As FastCGIParams
     Set params = New FastCGIParams
 
@@ -46,7 +46,7 @@ Private Sub WriteParams()
 End Sub
 
 
-Private Function ReadParams() As FastCGIParams
+Public Function ReadParams() As FastCGIParams
     Dim record As IFastCGIRecord
     Set record = New FastCGIParams
     record.ReadFromTcpClient m_clientSocket
@@ -54,7 +54,7 @@ Private Function ReadParams() As FastCGIParams
 End Function
 
 
-Private Sub WriteInput(text As String)
+Public Sub WriteInput(text As String)
     Dim stdin As FastCGIStream
     Set stdin = New FastCGIStream
     stdin.StreamType = FastCGI.FASTCGI_TYPE_STDIN
@@ -73,7 +73,7 @@ Private Sub WriteInput(text As String)
 End Sub
 
 
-Private Sub WriteOutput(text As String)
+Public Sub WriteOutput(text As String)
     Dim stdin As FastCGIStream
     Set stdin = New FastCGIStream
     stdin.StreamType = FastCGI.FASTCGI_TYPE_STDOUT
@@ -86,21 +86,21 @@ Private Sub WriteOutput(text As String)
 End Sub
 
 
-Private Sub ReadStream()
+Public Sub ReadStream()
     Dim record As IFastCGIRecord
     Set record = New FastCGIStream
     record.ReadFromTcpClient m_clientSocket
 End Sub
 
 
-Private Sub WriteEnd()
+Public Sub WriteEnd()
     Dim record As IFastCGIRecord
     Set record = New FastCGIEndRequest
     record.WriteToTcpClient m_clientSocket
 End Sub
 
 
-Private Sub ReadEnd()
+Public Sub ReadEnd()
     Dim record As IFastCGIRecord
     Set record = New FastCGIEndRequest
     record.ReadFromTcpClient m_clientSocket
