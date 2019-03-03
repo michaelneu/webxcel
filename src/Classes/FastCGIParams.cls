@@ -15,8 +15,8 @@ Private m_params As Collection
 
 Private Sub Class_Initialize()
     Set m_header = New FastCGIHeader
-    m_header.ProtocolVersion = 1
-    m_header.MessageType = FastCGI.FASTCGI_TYPE_PARAMS
+    m_header.Info.ProtocolVersion = 1
+    m_header.Info.MessageType = FastCGI.FASTCGI_TYPE_PARAMS
     m_header.RequestId = 1
     m_header.PaddingLength = 0
 
