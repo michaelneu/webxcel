@@ -15,14 +15,14 @@ Public Content As String
 
 Private Sub Class_Initialize()
     Set m_header = New FastCGIHeader
-    m_header.ProtocolVersion = 1
+    m_header.Info.ProtocolVersion = 1
     m_header.RequestId = 1
     m_header.PaddingLength = 0
 End Sub
 
 
 Public Property Get StreamType() As Integer
-    StreamType = m_header.MessageType
+    StreamType = m_header.Info.MessageType
 End Property
 
 

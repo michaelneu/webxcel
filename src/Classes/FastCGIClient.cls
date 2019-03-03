@@ -15,6 +15,14 @@ Public Sub Initialize(clientSocket As TcpClient)
 End Sub
 
 
+Public Function ReadTypeInfo() As FastCGITypeInfo
+    Dim record As IFastCGIRecord
+    Set record = New FastCGITypeInfo
+    record.ReadFromTcpClient m_clientSocket
+    Set ReadTypeInfo = record
+End Function
+
+
 Public Sub WriteBegin()
     Dim record As IFastCGIRecord
     Set record = New FastCGIBeginRequest
