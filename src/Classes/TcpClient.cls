@@ -41,21 +41,29 @@ Public Function SendString(ByVal message As String) As Long
 End Function
 
 
-Public Function ReceiveString() As String
-    Dim message As String
-    Dim buffer As String * 1024
-    Dim readBytes As Long
+Public Function ReceiveBytes(ByVal bytes As Long) As String
+    Dim buffer As String
+    buffer = StringExtensions.Repeat(Chr(0), bytes)
     
+    Dim readBytes As Long
+    readBytes = wsock32.recv(m_clientSocket, buffer, bytes, 0)
+    
+    ReceiveBytes = StringExtensions.Substring(buffer, 0, readBytes)
+End Function
+
+
+Public Function ReceiveString() As String
+    Dim buffer As String
+    Dim message As String
     message = ""
     
     Do
-        buffer = ""
-        readBytes = wsock32.recv(m_clientSocket, buffer, Len(buffer), 0)
+        buffer = ReceiveBytes(1024)
         
-        If readBytes > 0 Then
+        If Len(buffer) > 0 Then
             message = message & Trim(buffer)
         End If
-    Loop While readBytes > 0
+    Loop While Len(buffer) > 0
     
     ReceiveString = Trim(message)
 End Function

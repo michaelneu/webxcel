@@ -34,6 +34,12 @@ End Property
 
 
 Private Sub IFastCGIRecord_ReadFromTcpClient(client As TcpClient)
+    Dim record As IFastCGIRecord
+    Set record = m_header
+    record.ReadFromTcpClient client
+
+    Content = client.ReceiveBytes(m_header.ContentLength)
+    client.ReceiveBytes m_header.PaddingLength
 End Sub
 
 
@@ -42,6 +48,7 @@ Private Sub IFastCGIRecord_WriteToTcpClient(client As TcpClient)
 
     Dim record As IFastCGIRecord
     Set record = m_header
+    record.WriteToTcpClient client
 
-    client.SendString record.ToBytes() & Content
+    client.SendString Content
 End Sub
