@@ -33,15 +33,15 @@ Public Property Let StreamType(ByVal value As Integer)
 End Property
 
 
-Private Sub IFastCGIRecord_FromBytes(ByVal bytes As String)
+Private Sub IFastCGIRecord_ReadFromTcpClient(client As TcpClient)
 End Sub
 
 
-Private Function IFastCGIRecord_ToBytes() As String
+Private Sub IFastCGIRecord_WriteToTcpClient(client As TcpClient)
     m_header.ContentLength = Len(Content)
 
     Dim record As IFastCGIRecord
     Set record = m_header
 
-    IFastCGIRecord_ToBytes = record.ToBytes() & Content
-End Function
+    client.SendString record.ToBytes() & Content
+End Sub

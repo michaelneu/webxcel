@@ -35,21 +35,25 @@ Public Sub Add(key As String, value As String)
 End Sub
 
 
-Private Sub IFastCGIRecord_FromBytes(ByVal bytes As String)
+Private Sub IFastCGIRecord_ReadFromTcpClient(client As TcpClient)
 End Sub
 
 
-Private Function IFastCGIRecord_ToBytes() As String
+Private Sub IFastCGIRecord_WriteToTcpClient(client As TcpClient)
     Dim record As IFastCGIRecord
     Dim bytes As String
     bytes = ""
 
     For Each param In m_params
-        Set record = param
-        bytes = bytes & record.ToBytes()
+        bytes = bytes & Marshal.Int8ToBytes(Len(param.key))
+        bytes = bytes & Marshal.Int8ToBytes(Len(param.value))
+        bytes = bytes & param.key
+        bytes = bytes & param.value
     Next
 
     m_header.ContentLength = Len(bytes)
     Set record = m_header
-    IFastCGIRecord_ToBytes = record.ToBytes() & bytes
-End Function
+    bytes = record.ToBytes() & bytes
+    
+    client.SendString bytes
+End Sub

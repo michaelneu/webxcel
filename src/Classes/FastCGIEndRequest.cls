@@ -16,13 +16,13 @@ Public Reserved As String
 
 
 Private Sub Class_Initialize()
-    
+    Set m_header = New FastCGIHeader
 End Sub
 
 
-Private Sub IFastCGIRecord_FromBytes(ByVal bytes As String)
+Private Sub IFastCGIRecord_ReadFromTcpClient(client As TcpClient)
 End Sub
 
 
-Private Function IFastCGIRecord_ToBytes() As String
-End Function
+Private Sub IFastCGIRecord_WriteToTcpClient(client As TcpClient)
+End Sub

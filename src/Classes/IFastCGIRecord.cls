@@ -7,8 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Public Function ToBytes() As String
-End Function
+Public Sub WriteToTcpClient(ByRef client As TcpClient)
+End Sub
 
-Public Sub FromBytes(ByVal bytes As String)
+Public Sub ReadFromBytes(ByRef client As TcpClient)
 End Sub

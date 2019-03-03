@@ -33,8 +33,8 @@ End Function
 Private Sub SendBegin()
     Dim record As IFastCGIRecord
     Set record = New FastCGIBeginRequest
-    
-    m_clientSocket.SendString record.ToBytes()
+
+    record.WriteToTcpClient client
 End Sub
 
 
@@ -47,14 +47,10 @@ Private Sub SendParams()
 
     Dim record As IFastCGIRecord
     Set record = params
-
-    Dim bytes As String
-    bytes = record.ToBytes()
+    record.WriteToTcpClient client
 
     Set record = New FastCGIParams
-    bytes = bytes & record.ToBytes()
-
-    m_clientSocket.SendString bytes
+    record.WriteToTcpClient client
 End Sub
 
 
@@ -67,13 +63,11 @@ Private Sub SendInput(text As String)
     Dim bytes As String
     Dim record As IFastCGIRecord
     Set record = stdin
-    bytes = record.ToBytes()
+    record.WriteToTcpClient client
 
     If Len(text) > 0 Then
         stdin.Content = ""
         Set record = stdin
-        bytes = bytes & record.ToBytes()
+        record.WriteToTcpClient client
     End If
-
-    m_clientSocket.SendString bytes
 End Sub
