@@ -28,12 +28,11 @@ Private Sub Class_Initialize()
 End Sub
 
 
-
-Private Sub IFastCGIRecord_FromBytes(ByVal bytes As String)
+Private Sub IFastCGIRecord_ReadFromTcpClient(client As TcpClient)
 End Sub
 
 
-Private Function IFastCGIRecord_ToBytes() As String
+Private Sub IFastCGIRecord_WriteToTcpClient(client As TcpClient)
     Dim header As IFastCGIRecord
     Set header = m_header
 
@@ -44,5 +43,5 @@ Private Function IFastCGIRecord_ToBytes() As String
     bytes = bytes & Marshal.Int8ToBytes(Flags)
     bytes = bytes & Reserved
 
-    IFastCGIRecord_ToBytes = bytes
-End Function
+    client.SendString bytes
+End Sub
