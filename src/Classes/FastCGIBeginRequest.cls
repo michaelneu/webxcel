@@ -18,8 +18,8 @@ Public Reserved As String
 Private Sub Class_Initialize()
     Set m_header = New FastCGIHeader
     m_header.ProtocolVersion = 1
-    m_header.RequestId = m_requestId
     m_header.MessageType = FastCGI.FASTCGI_TYPE_BEGIN_REQUEST
+    m_header.RequestId = 1
     m_header.ContentLength = 8
     m_header.PaddingLength = 0
 
@@ -29,15 +29,32 @@ End Sub
 
 
 Private Sub IFastCGIRecord_ReadFromTcpClient(client As TcpClient)
+    Dim record As IFastCGIRecord
+    Set record = m_header
+    record.ReadFromTcpClient client
+
+    Dim bytes As String
+    bytes = client.ReceiveBytes(m_header.ContentLength)
+
+    Role = Marshal.BytesToInt16(StringExtensions.Substring(bytes, 0, 2))
+    bytes = StringExtensions.Substring(bytes, 2)
+
+    Flags = Marshal.BytesToInt8(StringExtensions.Substring(bytes, 0, 1))
+    bytes = StringExtensions.Substring(bytes, 1)
+
+    Reserved = bytes
+
+    client.ReceiveBytes m_header.PaddingLength
 End Sub
 
 
 Private Sub IFastCGIRecord_WriteToTcpClient(client As TcpClient)
     Dim header As IFastCGIRecord
     Set header = m_header
+    header.WriteToTcpClient client
 
     Dim bytes As String
-    bytes = header.ToBytes()
+    bytes = ""
 
     bytes = bytes & Marshal.Int16ToBytes(Role)
     bytes = bytes & Marshal.Int8ToBytes(Flags)

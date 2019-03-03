@@ -30,15 +30,22 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
 End Function
 
 
-Private Sub SendBegin()
+Private Sub WriteBegin()
     Dim record As IFastCGIRecord
     Set record = New FastCGIBeginRequest
-
-    record.WriteToTcpClient client
+    record.WriteToTcpClient m_clientSocket
 End Sub
 
 
-Private Sub SendParams()
+Private Function ReadBegin() As FastCGIBeginRequest
+    Dim record As IFastCGIRecord
+    Set record = New FastCGIBeginRequest
+    record.ReadFromTcpClient m_clientSocket
+    Set ReadBegin = record
+End Function
+
+
+Private Sub WriteParams()
     Dim params As FastCGIParams
     Set params = New FastCGIParams
 
@@ -47,14 +54,22 @@ Private Sub SendParams()
 
     Dim record As IFastCGIRecord
     Set record = params
-    record.WriteToTcpClient client
+    record.WriteToTcpClient m_clientSocket
 
     Set record = New FastCGIParams
-    record.WriteToTcpClient client
+    record.WriteToTcpClient m_clientSocket
 End Sub
 
 
-Private Sub SendInput(text As String)
+Private Function ReadParams() As FastCGIParams
+    Dim record As IFastCGIRecord
+    Set record = New FastCGIParams
+    record.ReadFromTcpClient m_clientSocket
+    Set ReadParams = record
+End Function
+
+
+Private Sub WriteInput(text As String)
     Dim stdin As FastCGIStream
     Set stdin = New FastCGIStream
     stdin.StreamType = FastCGI.FASTCGI_TYPE_STDIN
@@ -63,11 +78,46 @@ Private Sub SendInput(text As String)
     Dim bytes As String
     Dim record As IFastCGIRecord
     Set record = stdin
-    record.WriteToTcpClient client
+    record.WriteToTcpClient m_clientSocket
 
     If Len(text) > 0 Then
         stdin.Content = ""
         Set record = stdin
-        record.WriteToTcpClient client
+        record.WriteToTcpClient m_clientSocket
     End If
 End Sub
+
+
+Private Sub WriteOutput(text As String)
+    Dim stdin As FastCGIStream
+    Set stdin = New FastCGIStream
+    stdin.StreamType = FastCGI.FASTCGI_TYPE_STDOUT
+    stdin.Content = text
+
+    Dim bytes As String
+    Dim record As IFastCGIRecord
+    Set record = stdin
+    record.WriteToTcpClient m_clientSocket
+End Sub
+
+
+Private Sub ReadStream()
+    Dim record As IFastCGIRecord
+    Set record = New FastCGIStream
+    record.ReadFromTcpClient m_clientSocket
+End Sub
+
+
+Private Sub WriteEnd()
+    Dim record As IFastCGIRecord
+    Set record = New FastCGIEndRequest
+    record.WriteToTcpClient m_clientSocket
+End Sub
+
+
+Private Sub ReadEnd()
+    Dim record As IFastCGIRecord
+    Set record = New FastCGIEndRequest
+    record.ReadFromTcpClient m_clientSocket
+End Sub
+
