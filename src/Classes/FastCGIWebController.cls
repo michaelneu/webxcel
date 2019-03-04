@@ -27,5 +27,36 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
     Dim fcgiClient As FastCGIClient
     Set fcgiClient = New FastCGIClient
     fcgiClient.Initialize clientSocket
-End Function
+    
+    fcgiClient.WriteBegin
+    fcgiClient.WriteParams
+    fcgiClient.WriteInput ""
+    
+    Dim typeInfo As FastCGITypeInfo
+    Dim body As String
+    body = ""
+    
+    Do While True
+        Set typeInfo = fcgiClient.ReadTypeInfo()
+        
+        If typeInfo.MessageType = FastCGI.FASTCGI_TYPE_STDOUT Then
+            Dim stdout As FastCGIStream
+            Set stdout = fcgiClient.ReadStream()
+            body = body & stdout.Content
+        ElseIf typeInfo.MessageType = FastCGI.FASTCGI_TYPE_END_REQUEST Then
+            Dim endRequest As FastCGIEndRequest
+            Set endRequest = fcgiClient.ReadEnd()
 
+            Exit Do
+        End If
+    Loop
+
+    clientSocket.Dispose
+
+    Dim response As HttpResponse
+    Set response = New HttpResponse
+    response.Parse body
+    response.StatusCode = 200
+
+    Set IWebController_ProcessRequest = response
+End Function
