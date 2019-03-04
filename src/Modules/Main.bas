@@ -2,9 +2,16 @@ Attribute VB_Name = "Main"
 Public Sub Main()
     Dim server As HttpServer
     Set server = New HttpServer
-    
+
+    Dim php As FastCGIWebController
+    Set php = New FastCGIWebController
+
+    php.Host = "localhost"
+    php.Port = 9000
+
+    server.Controllers.AddController php
     server.Controllers.AddController New WorkbookWebController
     server.Controllers.AddController New FileSystemWebController
-    
+
     server.Serve 8080
 End Sub
