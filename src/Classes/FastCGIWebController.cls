@@ -29,7 +29,24 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
     fcgiClient.Initialize clientSocket
     
     fcgiClient.WriteBegin
-    fcgiClient.WriteParams
+    
+    Dim params As FastCGIParams
+    Set params = New FastCGIParams
+
+    params.Add "REQUEST_METHOD", request.RequestMethod
+    params.Add "SERVER_PROTOCOL", "http"
+    params.Add "SERVER_NAME", "webxcel.local"
+    params.Add "SERVER_SOFTWARE", "Microsoft Excel/" & Application.Version
+    params.Add "GATEWAY_INTERFACE", "CGI/1.1"
+    params.Add "SCRIPT_NAME", request.Url
+    params.Add "SCRIPT_FILENAME", request.Url
+    params.Add "DOCUMENT_URI", request.Url
+    
+    For Each header In request.Headers.GetEnumerator
+        params.Add ConvertHeaderNameToParamName(header.name), header.Value
+    Next
+    
+    fcgiClient.WriteParams params
     fcgiClient.WriteInput ""
     
     Dim typeInfo As FastCGITypeInfo
@@ -56,7 +73,15 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
     Dim response As HttpResponse
     Set response = New HttpResponse
     response.Parse body
-    response.StatusCode = 200
+    
+    If response.StatusCode = 0 Then
+        response.StatusCode = 200
+    End If
 
     Set IWebController_ProcessRequest = response
+End Function
+
+
+Private Function ConvertHeaderNameToParamName(ByVal headerName As String) As String
+    ConvertHeaderNameToParamName = UCase(Replace(headerName, "-", "_"))
 End Function

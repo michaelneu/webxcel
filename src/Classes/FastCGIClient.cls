@@ -38,13 +38,7 @@ Public Function ReadBegin() As FastCGIBeginRequest
 End Function
 
 
-Public Sub WriteParams()
-    Dim params As FastCGIParams
-    Set params = New FastCGIParams
-
-    params.Add "SERVER_SOFTWARE", "Microsoft Excel/" & Application.version
-    params.Add "GATEWAY_INTERFACE", "CGI/1.1"
-
+Public Sub WriteParams(ByRef params As FastCGIParams)
     Dim record As IFastCGIRecord
     Set record = params
     record.WriteToTcpClient m_clientSocket
