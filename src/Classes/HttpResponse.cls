@@ -43,7 +43,7 @@ End Property
 
 
 Public Function ToString() As String
-    Headers.AddHeader "Server", "Microsoft Excel/" & Application.version
+    Headers.AddHeader "Server", "Microsoft Excel/" & Application.Version
     Headers.AddHeader "Content-Length", Len(Body)
     Headers.AddHeader "Connection", "close"
 
@@ -92,6 +92,10 @@ Private Sub ParseHeader(ByVal line As String)
 
     Dim parts
     parts = Split(line, ":", 2)
-
-    m_headers.AddHeader Trim(parts(0)), Trim(parts(1))
+    
+    If parts(0) = "Status" Then
+        StatusCode = Split(parts(0), " ", 1)
+    Else
+        m_headers.AddHeader Trim(parts(0)), Trim(parts(1))
+    End If
 End Sub
