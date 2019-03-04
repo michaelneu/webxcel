@@ -28,8 +28,8 @@ Public Function Int16ToBytes(ByVal value As Integer) As String
 End Function
 
 
-Public Function BytesToInt16(ByVal bytes As String) As Integer
-    BytesToInt16 = Asc(CharAt(bytes, 1)) * integer0xFF + Asc(CharAt(bytes, 2))
+Public Function BytesToInt16(ByVal bytes As String) As Long
+    BytesToInt16 = Asc(CharAt(bytes, 1)) * long0xFF + Asc(CharAt(bytes, 2))
 End Function
 
 
