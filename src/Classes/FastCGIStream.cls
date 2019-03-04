@@ -28,7 +28,7 @@ End Property
 
 Public Property Let StreamType(ByVal value As Integer)
     If value = FastCGI.FASTCGI_TYPE_STDIN Or value <> FastCGI.FASTCGI_TYPE_STDOUT Then
-        m_header.MessageType = value
+        m_header.Info.MessageType = value
     End If
 End Property
 
