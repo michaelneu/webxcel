@@ -11,7 +11,7 @@ Private m_clientSocket As TcpClient
 
 
 Public Sub Initialize(clientSocket As TcpClient)
-    m_clientSocket = clientSocket
+    Set m_clientSocket = clientSocket
 End Sub
 
 
@@ -94,11 +94,12 @@ Public Sub WriteOutput(text As String)
 End Sub
 
 
-Public Sub ReadStream()
+Public Function ReadStream() As FastCGIStream
     Dim record As IFastCGIRecord
     Set record = New FastCGIStream
     record.ReadFromTcpClient m_clientSocket
-End Sub
+    Set ReadStream = record
+End Function
 
 
 Public Sub WriteEnd()
@@ -108,8 +109,9 @@ Public Sub WriteEnd()
 End Sub
 
 
-Public Sub ReadEnd()
+Public Function ReadEnd() As FastCGIEndRequest
     Dim record As IFastCGIRecord
     Set record = New FastCGIEndRequest
     record.ReadFromTcpClient m_clientSocket
-End Sub
+    Set ReadEnd = record
+End Function
