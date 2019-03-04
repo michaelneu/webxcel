@@ -41,8 +41,9 @@ Public Property Get Headers() As HttpHeaderCollection
     Set Headers = m_headers
 End Property
 
+
 Public Function ToString() As String
-    Headers.AddHeader "Server", "Microsoft Excel/" & Application.Version
+    Headers.AddHeader "Server", "Microsoft Excel/" & Application.version
     Headers.AddHeader "Content-Length", Len(Body)
     Headers.AddHeader "Connection", "close"
 
@@ -59,6 +60,38 @@ Public Function ToString() As String
     ToString = text
 End Function
 
-Private Function HeadersToString() As String
 
-End Function
+Public Sub Parse(ByVal response As String)
+    Dim parts
+    parts = Split(response, vbCrLf & vbCrLf, 2)
+    
+    If UBound(parts) <> 1 Then
+        Err.Raise ErrorHttpRequestInvalidFormat
+        Exit Sub
+    End If
+    
+    ParseHeaders parts(0)
+    m_body = Trim(parts(1))
+End Sub
+
+
+Private Sub ParseHeaders(ByVal Headers As String)
+    Set m_headers = New HttpHeaderCollection
+
+    Dim lines
+    lines = Split(Headers, vbCrLf)
+    
+    For Each line In lines
+        ParseHeader line
+    Next
+End Sub
+
+
+Private Sub ParseHeader(ByVal line As String)
+    line = Trim(line)
+
+    Dim parts
+    parts = Split(line, ":", 2)
+
+    m_headers.AddHeader Trim(parts(0)), Trim(parts(1))
+End Sub
