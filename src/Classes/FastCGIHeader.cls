@@ -11,7 +11,7 @@ Implements IFastCGIRecord
 
 Private m_typeInfo As FastCGITypeInfo
 Public RequestId As Integer
-Public ContentLength As Integer
+Public ContentLength As Long
 Public PaddingLength As Byte
 Public Reserved As String
 
