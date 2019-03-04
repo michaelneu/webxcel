@@ -13,6 +13,10 @@ Private m_clientSocket As Long
 
 
 Public Sub ConnectTo(host As String, port As Long)
+    If host = "localhost" Then
+        host = "127.0.0.1"
+    End If
+
     Dim address As wsock32.sockaddr_in
     address.sin_addr.s_addr = wsock32.inet_addr(host)
     address.sin_family = wsock32.AF_INET
@@ -48,7 +52,9 @@ Public Function ReceiveBytes(ByVal bytes As Long) As String
     Dim readBytes As Long
     readBytes = wsock32.recv(m_clientSocket, buffer, bytes, 0)
     
-    ReceiveBytes = StringExtensions.Substring(buffer, 0, readBytes)
+    If readBytes <> -1 Then
+        ReceiveBytes = StringExtensions.Substring(buffer, 0, readBytes)
+    End If
 End Function
 
 
@@ -58,10 +64,10 @@ Public Function ReceiveString() As String
     message = ""
     
     Do
-        buffer = ReceiveBytes(1024)
-        
+        buffer = Trim(ReceiveBytes(1024))
+
         If Len(buffer) > 0 Then
-            message = message & Trim(buffer)
+            message = message & buffer
         End If
     Loop While Len(buffer) > 0
     
