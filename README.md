@@ -1,4 +1,5 @@
-![webxcel logo](images/logo.png)
+![webxcel logo](images/logo.png)[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmichaelneu%2Fwebxcel.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmichaelneu%2Fwebxcel?ref=badge_shield)
+
 
 [![license](https://img.shields.io/github/license/michaelneu/webxcel.svg)](https://github.com/michaelneu/webxcel)
 [![GitHub tag](https://img.shields.io/github/tag/michaelneu/webxcel.svg)](https://github.com/michaelneu/webxcel)
@@ -110,3 +111,5 @@ To contribute, clone the repository, build an empty webxcel project and start ha
 ## License
 
 Webxcel is released under the [MIT license](LICENSE).
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmichaelneu%2Fwebxcel.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmichaelneu%2Fwebxcel?ref=badge_large)
