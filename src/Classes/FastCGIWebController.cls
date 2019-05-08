@@ -12,10 +12,15 @@ Implements IWebController
 
 Public Host As String
 Public Port As Long
+Public Extension As String
 
 
 Private Function IWebController_MatchesUrl(requestUrl As String) As Boolean
-    IWebController_MatchesUrl = True
+    If requestUrl Like Extension Then
+        IWebController_MatchesUrl = True
+    Else
+        IWebController_MatchesUrl = False
+    End If
 End Function
 
 
