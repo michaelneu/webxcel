@@ -5,7 +5,7 @@
 [![Github All Releases](https://img.shields.io/github/downloads/michaelneu/webxcel/total.svg)](https://github.com/michaelneu/webxcel)
 [![GitHub issues](https://img.shields.io/github/issues/michaelneu/webxcel.svg)](https://github.com/michaelneu/webxcel)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/michaelneu/webxcel.svg)](https://github.com/michaelneu/webxcel)
-[![Github search hit counter](https://img.shields.io/github/search/michaelneu/webxcel/goto.svg)](https://github.com/michaelneu/webxcel)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmichaelneu%2Fwebxcel.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmichaelneu%2Fwebxcel?ref=badge_shield)
 
 Webxcel creates a full-fledged RESTful web backend from your Microsoft Excel workbooks. It is written in 100% plain Visual Basic macros and comes with a lot of handy tools to help you build the next big thing.
 
