@@ -67,6 +67,11 @@ Many new devices come with Microsoft Office preinstalled, most of the time you w
 Webxcel is built on Windows Sockets 2 and runs on any Microsoft Excel version starting from Microsoft Office 2007, but should work on any macro enabled setup.
 
 
+#### Hassle-free PHP
+
+Everybody hates PHP configurations. That's why webxcel ships with a PHP plugin that just works, no configuration needed. It's like serverless but better!
+
+
 #### Missing something?
 
 Check out the [features project](https://github.com/michaelneu/webxcel/projects/2) to get the latest news and ideas for webxcel, or file a [new issue](https://github.com/michaelneu/webxcel/issues/new).
