@@ -8,6 +8,7 @@ Public Sub Main()
 
     php.Host = "localhost"
     php.Port = 9000
+    php.Extension = "*.php"
 
     server.Controllers.AddController php
     server.Controllers.AddController New WorkbookWebController
