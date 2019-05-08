@@ -23,7 +23,7 @@ To configure a new table, simply insert your column names in the first row of an
 When accessing `GET /workbook/cities`, webxcel will return a fully mapped JSON object (response formatted for better readability): 
 
 ```http
-HTTP/1.1 200 Nobody Needs This Anyway
+HTTP/1.1 200 OK
 Content-Type: application/json
 Server: Microsoft Excel/16.0
 Content-Length: 200
