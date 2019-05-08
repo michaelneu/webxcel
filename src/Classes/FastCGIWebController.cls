@@ -52,6 +52,8 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
     Next
     
     fcgiClient.WriteParams params
+    Set params = New FastCGIParams
+    fcgiClient.WriteParams params
 
     If Len(request.Body) > 0 Then
         Dim stdin As String
