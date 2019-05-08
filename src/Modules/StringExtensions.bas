@@ -40,7 +40,11 @@ End Function
 
 
 Public Function Substring(ByVal text As String, startIndex As Integer, Optional length As Variant) As String
-    If IsMissing(length) Or TypeName(length) <> "Integer" Then
+    If startIndex > Len(text) Then
+        startIndex = Len(text)
+    End If
+
+    If IsMissing(length) Or TypeName(length) <> "Integer" Or length > Len(text) Then
         length = Len(text) - startIndex
     End If
 
