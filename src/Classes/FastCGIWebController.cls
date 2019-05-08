@@ -52,6 +52,19 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
     Next
     
     fcgiClient.WriteParams params
+
+    If Len(request.Body) > 0 Then
+        Dim stdin As String
+        stdin = request.Body
+
+        Do While Len(stdin) > 65535
+            Dim chunk As String
+            chunk = StringExtensions.Substring(stdin, 0, 65535)
+            fcgiClient.WriteInput chunk
+            stdin = StringExtensions.Substring(stdin, 65535, 0)
+        Loop
+    End If
+
     fcgiClient.WriteInput ""
     
     Dim typeInfo As FastCGITypeInfo
