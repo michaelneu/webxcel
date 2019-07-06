@@ -3,8 +3,10 @@ Public Function TrimLeft(text As String, c As String) As String
     Dim textLength As Long
     textLength = Len(text)
     
+    Dim firstCharacter As String
+    
     Do While textLength > 0
-        Dim firstCharacter As String
+       
         firstCharacter = Left(text, 1)
         
         If firstCharacter <> c Then
@@ -23,8 +25,10 @@ Public Function TrimRight(text As String, c As String) As String
     Dim textLength As Long
     textLength = Len(text)
     
+    Dim lastCharacter As String
+        
     Do While textLength > 0
-        Dim lastCharacter As String
+        
         lastCharacter = Right(text, 1)
         
         If lastCharacter <> c Then
