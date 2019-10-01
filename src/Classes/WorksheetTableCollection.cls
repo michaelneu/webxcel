@@ -14,16 +14,16 @@ Private Sub Class_Initialize()
     Set m_tables = CreateObject("Scripting.Dictionary")
     
     Dim i As Integer
-    For i = 1 To Worksheets.Count
-        Dim sheet
-        Set sheet = Worksheets(i)
+    For i = 1 To Worksheets.count
+        Dim Sheet
+        Set Sheet = Worksheets(i)
         
         Dim sheetName As String
-        sheetName = LCase(Trim(sheet.Name))
+        sheetName = LCase(Trim(Sheet.name))
         
         Dim table As WorksheetTable
         Set table = New WorksheetTable
-        table.Initialize sheet
+        table.Initialize Sheet
         
         m_tables.Add sheetName, table
     Next i

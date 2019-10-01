@@ -6,8 +6,8 @@ Public Sub Main()
     Dim php As FastCGIWebController
     Set php = New FastCGIWebController
 
-    php.Host = "localhost"
-    php.Port = 9000
+    php.host = "localhost"
+    php.port = 9000
     php.Extension = "*.php"
 
     server.Controllers.AddController php

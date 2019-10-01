@@ -36,8 +36,8 @@ Public Property Get Url() As String
 End Property
 
 
-Public Property Get Body() As String
-    Body = m_body
+Public Property Get body() As String
+    body = m_body
 End Property
 
 

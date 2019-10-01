@@ -11,7 +11,7 @@ Implements IFastCGIRecord
 
 Private m_header As FastCGIHeader
 Public Role As Integer
-Public Flags As Byte
+Public flags As Byte
 Public Reserved As String
 
 
@@ -39,7 +39,7 @@ Private Sub IFastCGIRecord_ReadFromTcpClient(client As TcpClient)
     Role = Marshal.BytesToInt16(StringExtensions.Substring(bytes, 0, 2))
     bytes = StringExtensions.Substring(bytes, 2)
 
-    Flags = Marshal.BytesToInt8(StringExtensions.Substring(bytes, 0, 1))
+    flags = Marshal.BytesToInt8(StringExtensions.Substring(bytes, 0, 1))
     bytes = StringExtensions.Substring(bytes, 1)
 
     Reserved = bytes
@@ -57,7 +57,7 @@ Private Sub IFastCGIRecord_WriteToTcpClient(client As TcpClient)
     bytes = ""
 
     bytes = bytes & Marshal.Int16ToBytes(Role)
-    bytes = bytes & Marshal.Int8ToBytes(Flags)
+    bytes = bytes & Marshal.Int8ToBytes(flags)
     bytes = bytes & Reserved
 
     client.SendString bytes

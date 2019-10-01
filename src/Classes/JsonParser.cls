@@ -68,7 +68,7 @@ Public Function ParseObject(obj As String) As JsonObject
     
     Set ParseObject = New JsonObject
     
-    obj = StringExtensions.SubString(obj, 1)
+    obj = StringExtensions.Substring(obj, 1)
     obj = Left(obj, Len(obj) - 1)
     
     Dim propertyName As String
@@ -167,7 +167,7 @@ End Function
 
 
 Public Function ParseString(str As String) As JsonValue
-    str = StringExtensions.SubString(str, 1)
+    str = StringExtensions.Substring(str, 1)
     str = Left(str, Len(str) - 1)
     
     Set ParseString = New JsonValue
@@ -227,7 +227,7 @@ Public Function ParseArray(arr As String) As JsonArray
     
     Set ParseArray = New JsonArray
     
-    arr = StringExtensions.SubString(arr, 1)
+    arr = StringExtensions.Substring(arr, 1)
     arr = Left(arr, Len(arr) - 1)
     
     Dim item As IJson

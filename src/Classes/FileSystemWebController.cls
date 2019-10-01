@@ -60,8 +60,8 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
     If file.Exists Then
         response.StatusCode = 200
         response.Headers.AddHeader "Content-Type", file.MimeType
-        response.Body = file.ReadString
-    ElseIf m_indexFiles.Count > 0 Then
+        response.body = file.ReadString
+    ElseIf m_indexFiles.count > 0 Then
         Dim foundIndexFile As Boolean
         foundIndexFile = False
         
@@ -72,7 +72,7 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
             If file.Exists Then
                 response.StatusCode = 200
                 response.Headers.AddHeader "Content-Type", file.MimeType
-                response.Body = file.ReadString
+                response.body = file.ReadString
                 
                 foundIndexFile = True
                 Exit For

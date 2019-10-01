@@ -17,8 +17,8 @@ Private Sub Class_Initialize()
 End Sub
 
 
-Public Property Get Count() As Long
-    Count = m_items.Count
+Public Property Get count() As Long
+    count = m_items.count
 End Property
 
 
@@ -27,8 +27,8 @@ Public Sub AddItem(item As IJson)
 End Sub
 
 
-Public Function GetItem(Index As Integer) As IJson
-    Set GetItem = m_items(Index + 1)
+Public Function GetItem(index As Integer) As IJson
+    Set GetItem = m_items(index + 1)
 End Function
 
 
@@ -36,13 +36,13 @@ Private Function IJson_ToJson() As String
     Dim json As String
     Dim i As Integer
     
-    For i = 1 To Count
+    For i = 1 To count
         Dim obj As IJson
         Set obj = m_items(i)
         
         json = json & obj.ToJson
         
-        If i < Count Then
+        If i < count Then
             json = json & ", "
         End If
     Next i

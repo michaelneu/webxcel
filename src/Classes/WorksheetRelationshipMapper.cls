@@ -56,7 +56,7 @@ Private Function MapEntryRelationships(entry As JsonObject) As JsonObject
         
         If property Like "fk_*" Then
             Dim foreignTableName As String
-            foreignTableName = StringExtensions.SubString(property, 3)
+            foreignTableName = StringExtensions.Substring(property, 3)
             
             Dim newVal As IJson
             
@@ -107,7 +107,7 @@ Public Function Find(sheetName As String, key) As IJson
     Set allValues = All(sheetName)
     
     Dim i As Integer
-    For i = 0 To allValues.Count - 1
+    For i = 0 To allValues.count - 1
         Dim value As JsonObject
         Set value = allValues.GetItem(i)
         
