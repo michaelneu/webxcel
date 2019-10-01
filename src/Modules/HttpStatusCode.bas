@@ -1,5 +1,6 @@
+Attribute VB_Name = "HttpStatusCode"
 Option Private Module ' To hide the init sub in the macro list
-Public HttpStatusMessages as Object
+Public HttpStatusMessages As Object
 
 Sub InitializeHttpStatusDictionary()
     Set HttpStatusMessages = CreateObject("Scripting.Dictionary")

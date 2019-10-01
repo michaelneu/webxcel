@@ -16,16 +16,16 @@ Public Property Get name() As String
 End Property
 
 
-Public Property Let name(ByVal Value As String)
-    m_name = Value
+Public Property Let name(ByVal value As String)
+    m_name = value
 End Property
 
 
-Public Property Get Value() As String
-    Value = m_value
+Public Property Get value() As String
+    value = m_value
 End Property
 
 
-Public Property Let Value(ByVal val As String)
+Public Property Let value(ByVal val As String)
     m_value = val
 End Property

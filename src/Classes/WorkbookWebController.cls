@@ -20,7 +20,7 @@ End Enum
 Private Type EntityRequest
     Mode As EntityRequestMode
     Sheet As String
-    Key As String
+    key As String
 End Type
 
 
@@ -62,12 +62,12 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
             Set values = m_wrm.All(parsedRequest.Sheet)
                 
             response.StatusCode = 200
-            response.Body = values.ToJson()
+            response.body = values.ToJson()
             
             requestHandled = True
         ElseIf request.RequestMethod = MethodPost And isJsonRequest Then
             Dim postBody As JsonObject
-            Set postBody = m_jsonParser.ParseObject(request.Body)
+            Set postBody = m_jsonParser.ParseObject(request.body)
             
             m_wrm.Insert parsedRequest.Sheet, postBody
             
@@ -79,16 +79,16 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
             
             response.Headers.AddHeader "Location", UrlPrefix & parsedRequest.Sheet & "/" & insertedId.value
             response.StatusCode = 201
-            response.Body = responseValue.ToJson()
+            response.body = responseValue.ToJson()
             
             requestHandled = True
         End If
     ElseIf parsedRequest.Mode = ByKey Then
         If request.RequestMethod = MethodGet Then
             Dim getValue As IJson
-            Set getValue = m_wrm.Find(parsedRequest.Sheet, parsedRequest.Key)
+            Set getValue = m_wrm.Find(parsedRequest.Sheet, parsedRequest.key)
             
-            response.Body = getValue.ToJson()
+            response.body = getValue.ToJson()
             
             ' this is a null value check in disguise
             If TypeName(getValue) = "JsonValue" Then
@@ -100,22 +100,22 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
             requestHandled = True
         ElseIf request.RequestMethod = MethodDelete Then
             Dim deleteValue As IJson
-            Set deleteValue = m_wrm.Delete(parsedRequest.Sheet, parsedRequest.Key)
+            Set deleteValue = m_wrm.Delete(parsedRequest.Sheet, parsedRequest.key)
             
             If deleteValue Is Nothing Then
                 response.StatusCode = 404
             Else
                 response.StatusCode = 200
                 response.Headers.AddHeader "Content-Type", "application/json"
-                response.Body = deleteValue.ToJson()
+                response.body = deleteValue.ToJson()
             End If
             
             requestHandled = True
         ElseIf request.RequestMethod = MethodPut And isJsonRequest Then
             Dim putBody As JsonObject
-            Set putBody = m_jsonParser.ParseObject(request.Body)
+            Set putBody = m_jsonParser.ParseObject(request.body)
             
-            If m_wrm.Update(parsedRequest.Sheet, parsedRequest.Key, putBody) Then
+            If m_wrm.Update(parsedRequest.Sheet, parsedRequest.key, putBody) Then
                 response.StatusCode = 204
             Else
                 response.StatusCode = 404
@@ -134,7 +134,7 @@ End Function
 
 
 Private Function ParseRequestUrl(requestUrl As String) As EntityRequest
-    requestUrl = StringExtensions.SubString(requestUrl, Len(UrlPrefix))
+    requestUrl = StringExtensions.Substring(requestUrl, Len(UrlPrefix))
     
     Dim urlParts
     urlParts = Split(requestUrl, "/")
@@ -147,16 +147,16 @@ Private Function ParseRequestUrl(requestUrl As String) As EntityRequest
         Exit Function
     End If
     
-    ParseRequestUrl.sheet = urlParts(0)
+    ParseRequestUrl.Sheet = urlParts(0)
     
     If partCount = 1 Then
         ParseRequestUrl.Mode = All
         Exit Function
     End If
     
-    ParseRequestUrl.Key = Trim(urlParts(1))
+    ParseRequestUrl.key = Trim(urlParts(1))
     
-    If Len(ParseRequestUrl.Key) = 0 Then
+    If Len(ParseRequestUrl.key) = 0 Then
         ParseRequestUrl.Mode = All
     Else
         ParseRequestUrl.Mode = ByKey

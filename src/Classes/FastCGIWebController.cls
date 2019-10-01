@@ -10,8 +10,8 @@ Attribute VB_Exposed = False
 Implements IWebController
 
 
-Public Host As String
-Public Port As Long
+Public host As String
+Public port As Long
 Public Extension As String
 
 
@@ -27,7 +27,7 @@ End Function
 Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpResponse
     Dim clientSocket As TcpClient
     Set clientSocket = New TcpClient
-    clientSocket.ConnectTo Host, Port
+    clientSocket.ConnectTo host, port
 
     Dim fcgiClient As FastCGIClient
     Set fcgiClient = New FastCGIClient
@@ -48,16 +48,16 @@ Private Function IWebController_ProcessRequest(request As HttpRequest) As HttpRe
     params.Add "DOCUMENT_URI", request.Url
     
     For Each header In request.Headers.GetEnumerator
-        params.Add ConvertHeaderNameToParamName(header.name), header.Value
+        params.Add ConvertHeaderNameToParamName(header.name), header.value
     Next
     
     fcgiClient.WriteParams params
     Set params = New FastCGIParams
     fcgiClient.WriteParams params
 
-    If Len(request.Body) > 0 Then
+    If Len(request.body) > 0 Then
         Dim stdin As String
-        stdin = request.Body
+        stdin = request.body
 
         Do While Len(stdin) > 65535
             Dim chunk As String

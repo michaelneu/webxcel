@@ -22,18 +22,18 @@ Public Property Get StatusCode() As Integer
 End Property
 
 
-Public Property Let StatusCode(ByVal Value As Integer)
-    m_statusCode = Value
+Public Property Let StatusCode(ByVal value As Integer)
+    m_statusCode = value
 End Property
 
 
-Public Property Get Body() As String
-    Body = m_body
+Public Property Get body() As String
+    body = m_body
 End Property
 
 
-Public Property Let Body(ByVal Value As String)
-    m_body = Value
+Public Property Let body(ByVal value As String)
+    m_body = value
 End Property
 
 
@@ -44,18 +44,18 @@ End Property
 
 Public Function ToString() As String
     Headers.AddHeader "Server", "Microsoft Excel/" & Application.Version
-    Headers.AddHeader "Content-Length", Len(Body)
+    Headers.AddHeader "Content-Length", Len(body)
     Headers.AddHeader "Connection", "close"
 
     Dim text As String
     text = "HTTP/1.1 " & StatusCode & " " & HttpStatusMessages(StatusCode) & vbCrLf
     
     For Each header In Headers.GetEnumerator
-        text = text & header.name & ": " & header.Value & vbCrLf
+        text = text & header.name & ": " & header.value & vbCrLf
     Next header
     
     text = text & vbCrLf
-    text = text & Body
+    text = text & body
     
     ToString = text
 End Function

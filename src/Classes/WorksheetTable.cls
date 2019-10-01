@@ -8,8 +8,8 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Private Type ColumnHeader
-    Name As String
-    Index As Integer
+    name As String
+    index As Integer
 End Type
 
 
@@ -20,8 +20,8 @@ Private m_primaryKey As Integer
 
 Public Property Get PrimaryKey() As String
     For Each column In m_columns
-        If column.Index = m_primaryKey Then
-            PrimaryKey = column.Name
+        If column.index = m_primaryKey Then
+            PrimaryKey = column.name
             Exit Property
         End If
     Next column
@@ -32,7 +32,7 @@ Public Property Get Columns() As Collection
     Set Columns = New Collection
     
     For Each column In m_columns
-        Columns.Add column.Name
+        Columns.Add column.name
     Next column
 End Property
 
@@ -41,7 +41,7 @@ Public Property Get Entries() As Collection
     Set Entries = New Collection
     
     Dim i As Long
-    For i = 2 To m_sheet.Rows.Count
+    For i = 2 To m_sheet.Rows.count
         Dim row
         Set row = m_sheet.Rows(i)
         
@@ -57,12 +57,12 @@ Public Property Get Entries() As Collection
         
         For Each column In m_columns
             Dim val
-            val = Trim(row.Cells(column.Index).text)
+            val = Trim(row.Cells(column.index).text)
             
             If val = "" Then
-                entry(column.Name) = Null
+                entry(column.name) = Null
             Else
-                entry(column.Name) = val
+                entry(column.name) = val
             End If
         Next column
         
@@ -74,7 +74,7 @@ End Property
 Public Sub Insert(value)
     Dim insertionRow As Long
     
-    insertionRow = m_sheet.Cells(1, m_primaryKey).End(xlDown).Row + 1
+    insertionRow = m_sheet.Cells(1, m_primaryKey).End(xlDown).row + 1
     
     If insertionRow = 1048577 Then
         For insertionRow = 2 To 1048576
@@ -94,7 +94,7 @@ Public Function Delete(key As String)
     Set Delete = Nothing
     
     Dim i As Long
-    For i = 2 To m_sheet.Rows.Count
+    For i = 2 To m_sheet.Rows.count
         Dim row
         Set row = m_sheet.Rows(i)
         
@@ -129,7 +129,7 @@ Public Function Update(key As String, values) As Boolean
     Update = False
     
     Dim updateRow As Long
-    For updateRow = 2 To m_sheet.Rows.Count
+    For updateRow = 2 To m_sheet.Rows.count
         Dim row
         Set row = m_sheet.Rows(updateRow)
         
@@ -148,11 +148,11 @@ End Function
 
 Private Sub SetRowValues(row As Long, values)
     For Each column In m_columns
-        If values.Exists(column.Name) Then
+        If values.Exists(column.name) Then
             Dim insertionCell
-            Set insertionCell = m_sheet.Cells(row, column.Index)
+            Set insertionCell = m_sheet.Cells(row, column.index)
             
-            insertionCell.value = values(column.Name)
+            insertionCell.value = values(column.name)
         End If
     Next column
 End Sub
@@ -168,7 +168,7 @@ Public Sub Initialize(worksheet)
     Set firstRow = m_sheet.Rows(1)
     
     Dim i As Integer
-    For i = 1 To firstRow.Cells.Count
+    For i = 1 To firstRow.Cells.count
         Dim column
         Set column = firstRow.Cells(i)
         
@@ -181,8 +181,8 @@ Public Sub Initialize(worksheet)
         
         Dim header As WorksheetTableColumnHeader
         Set header = New WorksheetTableColumnHeader
-        header.Name = text
-        header.Index = i
+        header.name = text
+        header.index = i
         
         m_columns.Add header
         

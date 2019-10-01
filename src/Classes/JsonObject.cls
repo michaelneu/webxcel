@@ -47,7 +47,7 @@ End Function
 Private Function IJson_ToJson() As String
     Dim i As Long
     Dim propertyCount As Long
-    propertyCount = m_properties.Count
+    propertyCount = m_properties.count
     
     Dim json As String
     

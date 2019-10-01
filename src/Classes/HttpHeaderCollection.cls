@@ -15,12 +15,12 @@ Private Sub Class_Initialize()
 End Sub
 
 
-Public Sub AddHeader(ByVal name As String, ByVal Value As String)
+Public Sub AddHeader(ByVal name As String, ByVal value As String)
     If m_headers.Exists(name) Then
         m_headers.Remove name
     End If
     
-    m_headers.Add name, Value
+    m_headers.Add name, value
 End Sub
 
 
@@ -28,15 +28,15 @@ Public Function GetEnumerator() As Collection
     Dim headerCollection As Collection
     Set headerCollection = New Collection
     
-    For Each Key In m_headers.Keys
+    For Each key In m_headers.Keys
         Dim header As HttpHeader
         Set header = New HttpHeader
         
-        header.name = Key
-        header.Value = m_headers(Key)
+        header.name = key
+        header.value = m_headers(key)
         
         headerCollection.Add header
-    Next Key
+    Next key
     
     Set GetEnumerator = headerCollection
 End Function
