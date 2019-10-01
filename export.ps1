@@ -6,8 +6,8 @@ LogInfo "Collecting modules"
 
 $missing = [System.Reflection.Missing]::Value
 $excel = New-Object -ComObject Excel.Application
-$document = $excel.Workbooks.Open($FILENAME, $missing, $true)
-$modules = $document.VBProject.VBComponents;
+$book = $excel.Workbooks.Open($FILENAME, $missing, $true)
+$modules = $book.VBProject.VBComponents;
 $exportedModules = 0
 
 For ($moduleIndex = 0; $moduleIndex -lt $modules.Count; $moduleIndex++)
